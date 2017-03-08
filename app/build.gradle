@@ -6,11 +6,11 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
-        applicationId "com.punksta.apps.robopoetry2"
+        applicationId "com.punksta.apps.robopoetry"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 5
-        versionName "1.13"
+        versionCode 6
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
