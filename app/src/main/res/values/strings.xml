@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">RoboPoetry</string>
+    <string name="face1">Riko</string>
+    <string name="face2">Chiyo-Chiyo</string>
+    <string name="face3">Hana</string>
+    <string name="face4">Tomiko</string>
+    <string name="face5">Taro</string>
+
+    <string name="button_info">INFO</string>
+    <string name="button_stop">STOP</string>
+    <string name="search">search</string>
+
+    <plurals name="poem_plural">
+        <item quantity="one">%1$s poem</item>
+        <item quantity="many">%1$s poems</item>
+        <item quantity="few">%1$s poems</item>
+        <item quantity="other">%1$s poems</item>
+    </plurals>
+
+</resources>
