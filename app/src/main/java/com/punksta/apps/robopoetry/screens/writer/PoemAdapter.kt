@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.punksta.apps.robopoetry.R
+import com.punksta.apps.robopoetry.entity.Celebration
+import com.punksta.apps.robopoetry.entity.CelebrationItem
+import com.punksta.apps.robopoetry.entity.EntityItem
 import com.punksta.apps.robopoetry.entity.Poem
 import com.punksta.apps.robopoetry.ext.setTypeFace
 
@@ -17,21 +20,24 @@ import com.punksta.apps.robopoetry.ext.setTypeFace
 
 class PoemViewHolder(view: View, val name: TextView, val year: TextView, val cutTextView: TextView) : RecyclerView.ViewHolder(view)
 
-class PoemAdapter(val items: MutableList<Poem>, val poemListener: (Poem) -> Unit) : RecyclerView.Adapter<PoemViewHolder>() {
+class PoemAdapter(val items: MutableList<EntityItem>, val poemListener: (EntityItem) -> Unit) : RecyclerView.Adapter<PoemViewHolder>() {
 
-    init {
-        setHasStableIds(true)
-    }
-
-    override fun getItemId(position: Int): Long {
-        return items[position].id.hashCode().toLong()
-    }
     override fun onBindViewHolder(holder: PoemViewHolder, position: Int) {
         val item = items[position]
-        holder.name.text = item.name
-        holder.year.text = item.year
-        holder.cutTextView.text = item.сutText
-        holder.itemView.setOnClickListener { poemListener(item) }
+        when (item) {
+            is Poem -> {
+                holder.name.text = item.name
+                holder.year.text = item.year
+                holder.cutTextView.text = item.сutText
+                holder.itemView.setOnClickListener { poemListener(item) }
+            }
+            is CelebrationItem -> {
+                holder.name.text = "Поздравление № $position"
+                holder.year.text = "2017"
+                holder.cutTextView.text = item.celebrationText
+                holder.itemView.setOnClickListener { poemListener(item) }
+            }
+        }
     }
 
     override fun getItemCount(): Int  = items.count()

@@ -10,7 +10,7 @@ data class Poem(val id: String,
                 val name: String,
                 val сutText: String,
                 val year : String,
-                val source: String) : Parcelable {
+                val source: String) : Parcelable, EntityItem {
     override fun writeToParcel(dest: Parcel, flags: Int) {
         with(dest) {
             writeString(id)
@@ -24,9 +24,7 @@ data class Poem(val id: String,
     constructor(id: Parcel) : this(id.readString(), id.readString(), id.readString(), id.readString(), id.readString())
 
 
-    override fun describeContents(): Int {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun describeContents(): Int = 0
 
 
     companion object {

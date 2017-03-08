@@ -9,17 +9,16 @@ import com.crashlytics.android.Crashlytics
 import com.fasterxml.jackson.core.*
 import com.opencsv.CSVReader
 import com.punksta.apps.robopoetry.R
-import com.punksta.apps.robopoetry.entity.Poem
-import com.punksta.apps.robopoetry.entity.Order
-import com.punksta.apps.robopoetry.entity.WriterInfo
+import com.punksta.apps.robopoetry.entity.*
 import io.fabric.sdk.android.Fabric
 import io.fabric.sdk.android.Logger
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.yandex.speechkit.Vocalizer
-import java.io.InputStreamReader
+import java.io.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -127,6 +126,39 @@ class DataModelImp(context: Context) : DataModel {
         }
     }
 
+
+    override fun getCelebration(celebration: Celebration): Single<List<CelebrationItem>> {
+        return Single.create { subsriber ->
+            when (celebration) {
+                is March8 -> {
+                    val result = ArrayList<CelebrationItem>()
+                    val content = BufferedReader(InputStreamReader(assetsManager.open("march8.json")))
+                    var last = StringBuilder()
+
+                    do {
+                        val lastLine = content.readLine()
+                        when (lastLine)  {
+                           "*****" -> {
+                                if (last.isNotEmpty()) {
+                                    result += CelebrationItem(last.toString())
+                                    last = StringBuilder()
+                                }
+                            }
+                            null -> {}
+                            else -> {
+                                last.append(lastLine + "\n")
+                            }
+                        }
+                    } while (lastLine != null)
+
+                    subsriber.onSuccess(result)
+                }
+                else -> {
+                    subsriber.onSuccess(emptyList())
+                }
+            }
+        }
+    }
 
     private fun loadFastPoems(writerId: String, cutSize: Int?, query: String?): List<Poem> {
         return assetsManager.open("$poemsPath/$writerId.poem.json")

@@ -8,13 +8,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import com.punksta.apps.robopoetry.R
-import com.punksta.apps.robopoetry.entity.Poem
-import com.punksta.apps.robopoetry.entity.WriterInfo
+import com.punksta.apps.robopoetry.entity.*
 import com.punksta.apps.robopoetry.ext.setTypeFace
 import com.punksta.apps.robopoetry.ext.textChangesEvents
-import com.punksta.apps.robopoetry.model.Robot
 import com.punksta.apps.robopoetry.model.Voice
 import com.punksta.apps.robopoetry.model.getModel
 import com.punksta.apps.robopoetry.screens.common.*
@@ -28,7 +25,7 @@ import ru.yandex.speechkit.Vocalizer
 /**
  * Created by stanislav on 1/2/17.
  */
-class WriterActivity : AppCompatActivity(), (Poem) -> Unit {
+class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
 
     private var load: Disposable? = null
     private var update: Disposable? = null
@@ -39,8 +36,11 @@ class WriterActivity : AppCompatActivity(), (Poem) -> Unit {
     private val button: Button
         get() = findViewById(R.id.stop_button) as Button
 
-    private val writer: WriterInfo
+    private val writer: WriterInfo?
         get() = intent.getParcelableExtra<WriterInfo>("writer")
+
+    private val celebration: Celebration?
+        get() = intent.getParcelableExtra("celebration")
 
     private val speckers: SpeackersView
         get() = findViewById(R.id.speakers) as SpeackersView
@@ -50,20 +50,31 @@ class WriterActivity : AppCompatActivity(), (Poem) -> Unit {
         return (getModel().getCurrent().voice as? Voice.YandexVoice?)?.voice?:Vocalizer.Voice.ALYSS
     }
 
-    override fun invoke(p1: Poem) {
+    override fun invoke(p1: EntityItem) {
         val voice : String = getCurrentVoice()
-
-        startService(Intent(this, PlayingService::class.java)
-                .setAction(ACTION_PLAY)
-                .putExtra(EXTRA_VOICE, voice)
-                .putExtra(EXTRA_WRITER, writer)
-                .putExtra(EXTRA_POEM, getModel().getPoem(writer.id, p1.id).blockingGet())
-        )
+        when (p1) {
+            is Poem -> {
+                startService(Intent(this, PlayingService::class.java)
+                        .setAction(ACTION_PLAY)
+                        .putExtra(EXTRA_VOICE, voice)
+                        .putExtra(EXTRA_WRITER, writer)
+                        .putExtra(EXTRA_POEM, getModel().getPoem(writer!!.id, p1.id).blockingGet())
+                )
+            }
+            is CelebrationItem -> {
+                startService(Intent(this, PlayingService::class.java)
+                        .setAction(ACTION_PLAY)
+                        .putExtra(EXTRA_VOICE, voice)
+                        .putExtra(EXTRA_CELEBRATION, celebration)
+                        .putExtra(EXTRA_CELEBRATION_ITEM, p1)
+                        .putExtra(EXTRA_USER_NAME, (findViewById(R.id.filter_by_name) as TextView).text.toString())
+                )
+            }
+        }
     }
 
 
     private var loaded = false
-
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -79,6 +90,7 @@ class WriterActivity : AppCompatActivity(), (Poem) -> Unit {
 
 
         (findViewById(R.id.filter_by_name) as TextView).setTypeFace("clacon.ttf")
+
         (findViewById(R.id.poems_items) as RecyclerView).layoutManager = LinearLayoutManager(this)
 
         val s = speckers
@@ -120,21 +132,43 @@ class WriterActivity : AppCompatActivity(), (Poem) -> Unit {
                 .setAction(ACTION_REGISTER)
         )
 
-        if (loaded.not()) {
-            load = getModel().queryPoems(writerId = writer.id, cutSize = 40)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { list ->
-                        (findViewById(R.id.poems_items) as RecyclerView).adapter = PoemAdapter(list.toMutableList(), this)
-                    }
-        }
-        update = (findViewById(R.id.filter_by_name) as TextView).textChangesEvents(false)
-                .flatMap { getModel().queryPoems(writerId = writer.id, query = it, cutSize = 40).toObservable() }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { list ->
-                    ((findViewById(R.id.poems_items) as RecyclerView).adapter as PoemAdapter).update(list)
+        val w = writer
+        val c = celebration
+        when {
+            w != null -> {
+                (findViewById(R.id.filter_by_name) as TextView).setHint(R.string.search)
+
+                if (loaded.not()) {
+                    load = getModel().queryPoems(writerId = w.id, cutSize = 40)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe { list ->
+                                (findViewById(R.id.poems_items) as RecyclerView).adapter = PoemAdapter(list.toMutableList(), this)
+                            }
                 }
+                update = (findViewById(R.id.filter_by_name) as TextView).textChangesEvents(false)
+                        .flatMap { getModel().queryPoems(writerId = w.id, query = it, cutSize = 40).toObservable() }
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { list ->
+                            ((findViewById(R.id.poems_items) as RecyclerView).adapter as PoemAdapter).update(list)
+                        }
+            }
+            c != null -> {
+                (findViewById(R.id.filter_by_name) as TextView).setHint(R.string.name)
+
+                getModel().getCelebration(c)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { list ->
+                            (findViewById(R.id.poems_items) as RecyclerView).adapter = PoemAdapter(list.toMutableList(), this)
+                        }
+            }
+            else -> {
+                finish()
+            }
+        }
+
     }
 
     override fun onStop() {
@@ -149,6 +183,11 @@ class WriterActivity : AppCompatActivity(), (Poem) -> Unit {
         fun getIntent(activity: AppCompatActivity, writerInfo: WriterInfo): Intent {
             return Intent(activity, WriterActivity::class.java)
                     .putExtra("writer", writerInfo)
+        }
+
+        fun getIntent(activity: AppCompatActivity, celebration: Celebration): Intent {
+            return Intent(activity, WriterActivity::class.java)
+                    .putExtra("celebration", celebration)
         }
     }
 }

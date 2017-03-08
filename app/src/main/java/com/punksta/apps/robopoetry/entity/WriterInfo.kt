@@ -7,7 +7,7 @@ import java.io.Serializable
 /**
  * Created by stanislav on 1/1/17.
  */
-data class WriterInfo(val id: String, val name: String, val poemCount: Int) : Parcelable {
+data class WriterInfo(val id: String, val name: String, val poemCount: Int) :Entity {
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(id)
         dest.writeString(name)

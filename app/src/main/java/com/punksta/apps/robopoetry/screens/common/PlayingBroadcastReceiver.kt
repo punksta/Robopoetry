@@ -20,15 +20,12 @@ class PlayingBroadcastReceiver : BroadcastReceiver() {
     private val subject: PublishSubject<Event> = PublishSubject.create()
 
     override fun onReceive(context: Context?, intent: Intent) {
-        val writer = intent.getParcelableExtra<WriterInfo>(EXTRA_WRITER)!!
-        val poem = intent.getParcelableExtra<Poem>(EXTRA_POEM)!!
-
         when (intent.getStringExtra(EXTRA_STATUS)) {
             BROADCAST_PLAYING_BEGIN -> {
-                subject.onNext(Event.PlayingStartted(poem, writer))
+                subject.onNext(Event.PlayingStartted())
             }
             else -> {
-                subject.onNext(Event.PlayingComplete(poem, writer))
+                subject.onNext(Event.PlayingComplete())
             }
         }
     }
@@ -38,6 +35,6 @@ class PlayingBroadcastReceiver : BroadcastReceiver() {
 }
 
 sealed class Event {
-    class PlayingStartted(val poem: Poem, val writerInfo: WriterInfo) : Event()
-    class PlayingComplete(val poem: Poem, val writerInfo: WriterInfo) : Event()
+    class PlayingStartted() : Event()
+    class PlayingComplete() : Event()
 }

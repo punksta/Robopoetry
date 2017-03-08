@@ -7,6 +7,8 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import com.punksta.apps.robopoetry.entity.Celebration
+import com.punksta.apps.robopoetry.entity.CelebrationItem
 import com.punksta.apps.robopoetry.entity.Poem
 import com.punksta.apps.robopoetry.entity.WriterInfo
 import com.punksta.apps.robopoetry.screens.common.PlayingBroadcastReceiver.Companion.BRODCAST_ACTION
@@ -24,8 +26,13 @@ import ru.yandex.speechkit.VocalizerListener
 const val key = "37064543-1d5c-4a88-80f6-d84ed607d874"
 
 const val EXTRA_POEM = "text"
+const val EXTRA_CELEBRATION_ITEM = "celebration_item"
+const val EXTRA_USER_NAME = "user_name"
+
 const val EXTRA_VOICE = "voice"
 const val EXTRA_WRITER = "writer"
+const val EXTRA_CELEBRATION = "celebration"
+
 const val EXTRA_STATUS = "status"
 
 const val ACTION_PLAY = "play"
@@ -38,13 +45,12 @@ const val BROADCAST_PLAYING_ERROR = "playing_error"
 
 
 class PlayingService: Service(), VocalizerListener {
-    private var poem: Poem? = null
-    private var voice: String? = null
-    private var writer: WriterInfo? = null
-    private var lastAction: String? = null
     private var vocolizer: Vocalizer? = null
     private var player: MediaPlayer? = null
     private var first = false
+
+    private var lastTask: PlayerTask? = null
+    private var lastAction: String? = null
 
 
     override fun onPlayingBegin(p0: Vocalizer?) {
@@ -55,11 +61,25 @@ class PlayingService: Service(), VocalizerListener {
             return
 
         lastAction = BROADCAST_PLAYING_BEGIN
-        sendBroadcast(Intent(BRODCAST_ACTION)
-                .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_BEGIN)
-                .putExtra(EXTRA_POEM, poem)
-                .putExtra(EXTRA_WRITER, writer)
-        )
+        val t = lastTask
+        when (t) {
+            is PoemTask -> {
+                sendBroadcast(Intent(BRODCAST_ACTION)
+                        .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_BEGIN)
+                        .putExtra(EXTRA_POEM, t.poem)
+                        .putExtra(EXTRA_WRITER, t.writer)
+                )
+            }
+            is CelebrationTask -> {
+                sendBroadcast(Intent(BRODCAST_ACTION)
+                        .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_BEGIN)
+                        .putExtra(EXTRA_CELEBRATION, t.celebration)
+                        .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
+                        .putExtra(EXTRA_USER_NAME, t.userName)
+                )
+            }
+        }
+
     }
 
     override fun onSynthesisDone(p0: Vocalizer?, p1: Synthesis?) {
@@ -69,13 +89,25 @@ class PlayingService: Service(), VocalizerListener {
     override fun onPlayingDone(p0: Vocalizer?) {
         if (lastAction == BROADCAST_PLAYING_END)
             return
-
         lastAction = BROADCAST_PLAYING_END
-        sendBroadcast(Intent(BRODCAST_ACTION)
-                .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
-                .putExtra(EXTRA_POEM, poem)
-                .putExtra(EXTRA_WRITER, writer)
-        )
+        val t = lastTask
+        when (t) {
+            is PoemTask -> {
+                sendBroadcast(Intent(BRODCAST_ACTION)
+                        .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
+                        .putExtra(EXTRA_POEM, t.poem)
+                        .putExtra(EXTRA_WRITER, t.writer)
+                )
+            }
+            is CelebrationTask -> {
+                sendBroadcast(Intent(BRODCAST_ACTION)
+                        .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
+                        .putExtra(EXTRA_CELEBRATION, t.celebration)
+                        .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
+                        .putExtra(EXTRA_USER_NAME, t.userName)
+                )
+            }
+        }
         stopBackgroundPlaying()
     }
 
@@ -107,11 +139,25 @@ class PlayingService: Service(), VocalizerListener {
             return
 
         lastAction = BROADCAST_PLAYING_ERROR
-        sendBroadcast(Intent(BRODCAST_ACTION)
-                .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_ERROR)
-                .putExtra(EXTRA_POEM, poem)
-                .putExtra(EXTRA_WRITER, writer)
-        )
+
+        val t = lastTask
+        when (t) {
+            is PoemTask -> {
+                sendBroadcast(Intent(BRODCAST_ACTION)
+                        .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_ERROR)
+                        .putExtra(EXTRA_POEM, t.poem)
+                        .putExtra(EXTRA_WRITER, t.writer)
+                )
+            }
+            is CelebrationTask -> {
+                sendBroadcast(Intent(BRODCAST_ACTION)
+                        .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_ERROR)
+                        .putExtra(EXTRA_CELEBRATION, t.celebration)
+                        .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
+                        .putExtra(EXTRA_USER_NAME, t.userName)
+                )
+            }
+        }
 
         stopBackgroundPlaying()
     }
@@ -145,35 +191,81 @@ class PlayingService: Service(), VocalizerListener {
     private fun onGetAction(intent: Intent?) {
         Log.v(javaClass.simpleName, intent?.action)
 
+        val t= lastTask
+
         when (intent?.action) {
             null, ACTION_STOP -> {
                 clearVocalizer()
                 stopBackgroundPlaying()
-                sendBroadcast(Intent(BRODCAST_ACTION)
-                        .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
-                        .putExtra(EXTRA_POEM, poem)
-                        .putExtra(EXTRA_WRITER, writer)
-                )
+                when (t) {
+                    is PoemTask -> {
+                        sendBroadcast(Intent(BRODCAST_ACTION)
+                                .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
+                                .putExtra(EXTRA_POEM, t.poem)
+                                .putExtra(EXTRA_WRITER, t.writer)
+                        )
+                    }
+                    is CelebrationTask -> {
+                        sendBroadcast(Intent(BRODCAST_ACTION)
+                                .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
+                                .putExtra(EXTRA_CELEBRATION, t.celebration)
+                                .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
+                                .putExtra(EXTRA_USER_NAME, t.userName)
+                        )
+                    }
+                }
             }
             ACTION_REGISTER -> {
                 if (lastAction != null) {
-                    sendBroadcast(Intent(BRODCAST_ACTION)
-                            .putExtra(EXTRA_STATUS, lastAction)
-                            .putExtra(EXTRA_POEM, poem)
-                            .putExtra(EXTRA_WRITER, writer)
-                    )
+                    when (t) {
+                        is PoemTask -> {
+                            sendBroadcast(Intent(BRODCAST_ACTION)
+                                    .putExtra(EXTRA_STATUS, lastAction)
+                                    .putExtra(EXTRA_POEM, t.poem)
+                                    .putExtra(EXTRA_WRITER, t.writer)
+                            )
+                        }
+                        is CelebrationTask -> {
+                            sendBroadcast(Intent(BRODCAST_ACTION)
+                                    .putExtra(EXTRA_STATUS, lastAction)
+                                    .putExtra(EXTRA_CELEBRATION, t.celebration)
+                                    .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
+                                    .putExtra(EXTRA_USER_NAME, t.userName)
+                            )
+                        }
+                    }
+
                 }
             }
             ACTION_PLAY -> {
-                poem = intent?.getParcelableExtra(EXTRA_POEM)!!
-                voice = intent?.getStringExtra(EXTRA_VOICE)!!
-                writer = intent?.getParcelableExtra<WriterInfo>(EXTRA_WRITER)!!
+                when {
+                    intent.hasExtra(EXTRA_POEM) -> {
+                        val poem = intent.getParcelableExtra<Poem>(EXTRA_POEM)!!
+                        val  voice = intent.getStringExtra(EXTRA_VOICE)!!
+                        val writer = intent.getParcelableExtra<WriterInfo>(EXTRA_WRITER)!!
+                        lastTask = PoemTask(voice, poem, writer)
 
-                val text = "${writer?.name}. ${poem?.name}. ${poem?.сutText}. Конец"
-                clearVocalizer()
-                vocolizer = Vocalizer.createVocalizer(Vocalizer.Language.RUSSIAN, text, true, voice).apply {
-                    setListener(this@PlayingService)
-                    start()
+                        val text = "${writer.name}. ${poem.name}. ${poem.сutText}. Конец"
+                        clearVocalizer()
+                        vocolizer = Vocalizer.createVocalizer(Vocalizer.Language.RUSSIAN, text, true, voice).apply {
+                            setListener(this@PlayingService)
+                            start()
+                        }
+                    }
+
+                    intent.hasExtra(EXTRA_CELEBRATION) -> {
+                        val  voice = intent.getStringExtra(EXTRA_VOICE)!!
+                        val celebration = intent.getParcelableExtra<Celebration>(EXTRA_CELEBRATION)
+                        val celebrationItem = intent.getParcelableExtra<CelebrationItem>(EXTRA_CELEBRATION_ITEM)
+                        val userName = intent.getStringExtra(EXTRA_USER_NAME)
+                        lastTask = CelebrationTask(voice, celebrationItem, userName, celebration)
+                        val text = "$userName, Поздравляю с ${getString(celebration.name)}. ${celebrationItem.celebrationText}"
+                        clearVocalizer()
+                        vocolizer = Vocalizer.createVocalizer(Vocalizer.Language.RUSSIAN, text, true, voice).apply {
+                            setListener(this@PlayingService)
+                            start()
+                        }
+                    }
                 }
             }
         }

@@ -9,6 +9,9 @@
     <string name="button_info">INFO</string>
     <string name="button_stop">STOP</string>
     <string name="search">search</string>
+    <string name="name">your name</string>
+
+    <string name="mart8">8 марта</string>
 
     <plurals name="poem_plural">
         <item quantity="one">%1$s poem</item>

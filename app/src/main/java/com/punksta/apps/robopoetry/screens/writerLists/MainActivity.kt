@@ -15,6 +15,9 @@ import android.widget.TextView
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.beta.Beta
 import com.punksta.apps.robopoetry.R
+import com.punksta.apps.robopoetry.entity.Celebration
+import com.punksta.apps.robopoetry.entity.Entity
+import com.punksta.apps.robopoetry.entity.March8
 import com.punksta.apps.robopoetry.entity.WriterInfo
 import com.punksta.apps.robopoetry.ext.setTypeFace
 import com.punksta.apps.robopoetry.ext.textChangesEvents
@@ -30,7 +33,7 @@ import org.sufficientlysecure.htmltextview.HtmlTextView
 import java.util.*
 
 
-class MainActivity : AppCompatActivity(), (WriterInfo) -> Unit {
+class MainActivity : AppCompatActivity(), (Entity) -> Unit {
 
 
     fun showSourceDialog() {
@@ -53,12 +56,18 @@ class MainActivity : AppCompatActivity(), (WriterInfo) -> Unit {
                 .show()
     }
 
-    override fun invoke(p1: WriterInfo) {
-        startActivity(WriterActivity.getIntent(this, p1))
+    override fun invoke(p1: Entity) {
+        when (p1) {
+            is WriterInfo -> startActivity(WriterActivity.getIntent(this, p1))
+            is Celebration ->  startActivity(WriterActivity.getIntent(this, p1))
+        }
     }
 
     private var disponseLoad: Disposable? = null
     private var disposableUpdate: Disposable? = null
+
+    val celebration: List<Celebration>
+        get() = listOf(March8)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +75,7 @@ class MainActivity : AppCompatActivity(), (WriterInfo) -> Unit {
         (findViewById(R.id.filter_by_name) as TextView).setTypeFace("clacon.ttf")
         (findViewById(R.id.writers_item) as RecyclerView).run {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = WriterAdapter(ArrayList(), this@MainActivity)
+            adapter = WriterAdapter(celebration, ArrayList(), this@MainActivity)
         }
 
         Fabric.with(this, Crashlytics(), Beta())

@@ -1,8 +1,6 @@
 package com.punksta.apps.robopoetry.model
 
-import com.punksta.apps.robopoetry.entity.Poem
-import com.punksta.apps.robopoetry.entity.Order
-import com.punksta.apps.robopoetry.entity.WriterInfo
+import com.punksta.apps.robopoetry.entity.*
 import io.reactivex.Single
 
 /**
@@ -12,6 +10,7 @@ interface DataModel {
     fun getPoem(writerId: String, poemId: String) : Single<Poem>
     fun queryWriters(queryString: String? = null, order: Order = Order.ASK) : Single<List<WriterInfo>>
     fun queryPoems(writerId: String? = null, query: String? = null, cutSize: Int? = 100) : Single<List<Poem>>
+    fun getCelebration(celebration: Celebration) : Single<List<CelebrationItem>>
     fun onLawMemory()
 
     fun getRobots() : List<Robot>
