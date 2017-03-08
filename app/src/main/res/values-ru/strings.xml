@@ -10,6 +10,10 @@
     <string name="button_stop">СТОП</string>
     <string name="search">поиск</string>
 
+    <string name="name">Ваше имя</string>
+    <string name="mart8">8 марта</string>
+
+
     <plurals name="poem_plural">
         <item quantity="one">%1$s стих</item>
         <item quantity="few">%1$s стиха</item>

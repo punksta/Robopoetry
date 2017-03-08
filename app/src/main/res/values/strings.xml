@@ -11,7 +11,7 @@
     <string name="search">search</string>
     <string name="name">your name</string>
 
-    <string name="mart8">8 марта</string>
+    <string name="mart8">March 8</string>
 
     <plurals name="poem_plural">
         <item quantity="one">%1$s poem</item>
