@@ -4,17 +4,13 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
-import android.view.inputmethod.InputMethodSubtype
 import com.crashlytics.android.Crashlytics
 import com.fasterxml.jackson.core.*
 import com.opencsv.CSVReader
 import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.entity.*
-import io.fabric.sdk.android.Fabric
-import io.fabric.sdk.android.Logger
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.yandex.speechkit.Vocalizer
 import java.io.*
 import java.util.*
@@ -160,20 +156,20 @@ class DataModelImp(context: Context) : DataModel {
         }
     }
 
-    private fun loadFastPoems(writerId: String, cutSize: Int?, query: String?): List<Poem> {
+    private fun loadFastPoems(writerId: String, cutLimit: Int?, query: String?): List<Poem> {
         return assetsManager.open("$poemsPath/$writerId.poem.json")
                 .let(::InputStreamReader)
-                .use {
+                .let {
                     val q = transform(query)
                     Log.v("query", "loadFastPoems: ${q}")
 
                     val parser = jsonFactory.createParser(it)
-                    parser.parsePoems(cutSize, q)
+                    parser.use { it.parsePoems(cutLimit, q) }
                 }
     }
 
 
-    override fun queryPoems(writerId: String?, query: String?, cutSize: Int?): Single<List<Poem>> {
+    override fun queryPoems(writerId: String?, query: String?, cutLimit: Int?): Single<List<Poem>> {
         val writers: Single<List<String>> = if (writerId != null) Single.just(listOf(writerId)) else getWriters().map { it.map { it.id } }
 
         val q = transform(query)
@@ -181,7 +177,7 @@ class DataModelImp(context: Context) : DataModel {
 
         return writers.toObservable()
                 .flatMap { Observable.fromIterable(it) }
-                .map { loadFastPoems(it, cutSize, q) }
+                .map { loadFastPoems(it, cutLimit, q) }
                 .reduce(listOf<Poem>(), { list1, list2 -> list1 + list2 })
     }
 
@@ -216,104 +212,3 @@ class DataModelImp(context: Context) : DataModel {
         currentRobot = robot
     }
 }
-
-
-private fun JsonParser.parsePoem(): Poem {
-    val id = currentName
-    var poemText = ""
-    var name = ""
-    var year = ""
-    var source = ""
-    while (nextToken() != JsonToken.END_OBJECT) {
-        when (currentName) {
-            "name" -> {
-                nextToken()
-                name = text
-            }
-
-            "year" -> {
-                nextToken()
-                year = text
-            }
-
-            "source" -> {
-                nextToken()
-                source = text
-            }
-
-            "poem" -> {
-                nextToken()
-                poemText = text.trim()
-            }
-        }
-    }
-    return Poem(id, name, poemText, year, source)
-}
-
-
-
-private infix fun WriterInfo.queryPredicate(query: String?): Boolean {
-    return when(query) {
-        null -> true
-        else -> name.split(" ").any { it.startsWith(query, true) }
-    }
-}
-
-private infix fun Poem.queryPredicate(query: String?) : Boolean {
-    return when(query) {
-        null -> true
-        else -> name.contains(query, true)  || сutText.contains(query, true)
-    }
-}
-
-
-private tailrec fun JsonParser.parsePoemsInner(result: List<Poem>, cutSize: Int?, predicate: (Poem) -> Boolean): List<Poem> {
-    return if (nextToken() == JsonToken.END_OBJECT) {
-        result
-    } else {
-        nextToken()
-        val p: Poem = parsePoem()
-
-        if (predicate(p)) {
-            val cutter = if (cutSize != null) p.сutText.cutString(0, cutSize) else p.сutText
-            parsePoemsInner(result + p.copy(сutText = cutter), cutSize, predicate)
-        } else {
-            parsePoemsInner(result, cutSize, predicate)
-        }
-    }
-}
-
-
-private fun JsonParser.parsePoems(cutSize: Int? = null, query: String? = null, idList: List<String>? = null): List<Poem> {
-    var result = listOf<Poem>()
-    while (nextToken() != JsonToken.END_OBJECT) {
-        val name = currentName
-        when (name) {
-            "id" -> nextToken()
-            "name" -> nextToken()
-            "poems" -> {
-                nextToken()
-                result = parsePoemsInner(emptyList(), cutSize) {
-                    val idResult = idList?.contains(it.id) ?: true
-                    if (idResult) {
-                        val qResult = it queryPredicate query
-                        qResult
-                    } else {
-                        false
-                    }
-                }
-            }
-        }
-    }
-    return result
-}
-
-private fun String.cutString(begin: Int, end: Int): String {
-    return if (length < end)
-        this
-    else
-        substring(begin, end)
-
-}
-
-

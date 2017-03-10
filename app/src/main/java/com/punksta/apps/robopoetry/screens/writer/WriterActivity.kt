@@ -139,7 +139,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                 (findViewById(R.id.filter_by_name) as TextView).setHint(R.string.search)
 
                 if (loaded.not()) {
-                    load = getModel().queryPoems(writerId = w.id, cutSize = 40)
+                    load = getModel().queryPoems(writerId = w.id, cutLimit = 40)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe { list ->
@@ -147,7 +147,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                             }
                 }
                 update = (findViewById(R.id.filter_by_name) as TextView).textChangesEvents(false)
-                        .flatMap { getModel().queryPoems(writerId = w.id, query = it, cutSize = 40).toObservable() }
+                        .flatMap { getModel().queryPoems(writerId = w.id, query = it, cutLimit = 40).toObservable() }
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { list ->

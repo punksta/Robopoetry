@@ -1,5 +1,6 @@
 package com.punksta.apps.robopoetry.entity
 
+import android.os.Parcelable
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 
@@ -7,12 +8,12 @@ import paperparcel.PaperParcelable
 /**
  * Created by stanislav on 3/9/17.
  */
-abstract class ReadingTask(val yandexVoice: String) : PaperParcelable
+sealed class ReadingTask(val yandexVoice: String) : Parcelable
 
 @PaperParcel
 class PoemReadingTask(yandexVoice: String,
                       val poem: Poem,
-                      val writer: WriterInfo) : ReadingTask(yandexVoice) {
+                      val writer: WriterInfo) : ReadingTask(yandexVoice), PaperParcelable {
 
     companion object {
         @JvmField val CREATOR = PaperParcelPoemReadingTask.CREATOR
@@ -23,7 +24,7 @@ class PoemReadingTask(yandexVoice: String,
 class CelebrationReadingTask(yandexVoice: String,
                              val userName: String,
                              val congratulation: Celebration,
-                             val celebrationItem: CelebrationItem) : ReadingTask(yandexVoice) {
+                             val celebrationItem: CelebrationItem) : ReadingTask(yandexVoice), PaperParcelable {
     companion object {
         @JvmField val CREATOR = PaperParcelCelebrationReadingTask.CREATOR
     }
