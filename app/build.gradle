@@ -4,7 +4,7 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.punksta.apps.robopoetry"
         minSdkVersion 17
@@ -34,31 +34,24 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:recyclerview-v7:25.2.0'
-
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'io.reactivex.rxjava2:rxjava:2.0.3'
     compile 'com.opencsv:opencsv:3.7'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.fasterxml.jackson.core:jackson-core:2.8.5'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
     compile 'org.sufficientlysecure:html-textview:3.1'
     compile 'com.yandex.android:speechkit:2.5.0'
-
-//    compile 'com.ibm.icu:icu4j:55.1'
+    //    compile 'com.ibm.icu:icu4j:55.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
-
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
-
-
     compile 'nz.bradcampbell:paperparcel:2.0.0'
-    compile 'nz.bradcampbell:paperparcel-kotlin:2.0.0' // Optional
+    compile 'nz.bradcampbell:paperparcel-kotlin:2.0.0'
+    // Optional
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.0'
-
-
     compile 'com.android.support:multidex:1.0.1'
 }
 
