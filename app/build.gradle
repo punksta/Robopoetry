@@ -50,6 +50,10 @@ dependencies {
     }
     compile 'nz.bradcampbell:paperparcel:2.0.0'
     compile 'nz.bradcampbell:paperparcel-kotlin:2.0.0'
+
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.3@aar'
+
     // Optional
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.0'
     compile 'com.android.support:multidex:1.0.1'

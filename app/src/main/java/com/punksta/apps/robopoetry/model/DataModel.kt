@@ -13,6 +13,8 @@ interface DataModel {
     fun getCelebration(celebration: Celebration) : Single<List<CelebrationItem>>
     fun onLawMemory()
 
+    fun getGreetingForRobot(robot: Robot) : String
+
     fun getRobots() : List<Robot>
     fun getCurrent() : Robot
     fun setCurrent(robot: Robot)

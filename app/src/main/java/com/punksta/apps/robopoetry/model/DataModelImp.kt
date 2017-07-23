@@ -22,6 +22,9 @@ import kotlin.collections.ArrayList
  */
 
 class DataModelImp(context: Context) : DataModel {
+    override fun getGreetingForRobot(robot: Robot): String {
+        return GreetingProvider.getGreetingForRobot(app, robot.toEnum())
+    }
 
 
     private val app = context.applicationContext
@@ -187,13 +190,7 @@ class DataModelImp(context: Context) : DataModel {
     }
 
 
-    private val r = listOf(
-            Robot(R.drawable.face1, R.string.face1, Voice.YandexVoice(Vocalizer.Voice.ALYSS)),
-            Robot(R.drawable.face2, R.string.face2, Voice.YandexVoice(Vocalizer.Voice.ERMIL)),
-            Robot(R.drawable.face3, R.string.face3, Voice.YandexVoice(Vocalizer.Voice.JANE)),
-            Robot(R.drawable.face4, R.string.face4, Voice.YandexVoice(Vocalizer.Voice.OMAZH)),
-            Robot(R.drawable.face5, R.string.face5, Voice.YandexVoice(Vocalizer.Voice.ZAHAR))
-    )
+    private val r = RobotEnum.values().map { it.robot }
 
     private var currentRobot: Robot? = null
 

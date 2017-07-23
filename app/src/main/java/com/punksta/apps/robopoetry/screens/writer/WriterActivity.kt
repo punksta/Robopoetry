@@ -12,6 +12,7 @@ import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.entity.*
 import com.punksta.apps.robopoetry.ext.setTypeFace
 import com.punksta.apps.robopoetry.ext.textChangesEvents
+import com.punksta.apps.robopoetry.model.Robot
 import com.punksta.apps.robopoetry.model.Voice
 import com.punksta.apps.robopoetry.model.getModel
 import com.punksta.apps.robopoetry.screens.common.*
@@ -98,6 +99,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         s.listener = {
             getModel().setCurrent(it)
             s.setActive(it)
+            notifyRobotChange(it);
         }
 
         s.showRobots(getModel().getRobots(), getModel().getCurrent(), Picasso.with(this))
@@ -110,6 +112,17 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         }
     }
 
+    fun notifyRobotChange (robot: Robot) {
+        speckers.clearSpeacking()
+
+        startService(Intent(this, PlayingService::class.java)
+                .setAction(ACTION_PLAY)
+                .putExtra(EXTRA_VOICE, getCurrentVoice())
+                .putExtra(EXTRA_ROBOT_GREETING, getModel().getGreetingForRobot(robot))
+                .putExtra(EXTRA_ROBOT_NAME, getString(robot.nameId))
+        )
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -120,9 +133,11 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                     when (event) {
                         is Event.PlayingStartted -> {
                             button.isEnabled = true
+                            speckers.setSpeacking(getModel().getCurrent())
                         }
                         else -> {
                             button.isEnabled = false
+                            speckers.clearSpeacking()
                         }
                     }
                 }

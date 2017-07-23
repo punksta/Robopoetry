@@ -20,4 +20,51 @@
         <item quantity="other">%1$s poems</item>
     </plurals>
 
+    <string-array name="ricko_greetings">
+        <item>Привет, я Рико</item>
+        <item>Рико всегда бодрая</item>
+        <item>Рико Рико Рико Рико</item>
+        <item>Эххх. Прекрасная погодка!</item>
+        <item>Привет! Самое время послушать стихи</item>
+        <item>Как я люблю жизнь</item>
+
+    </string-array>
+
+    <string-array name="chio_greetings">
+        <item>Доброго дня, я Чиио-Чиио.    </item>
+        <item>Чио-Чио снимает шляпу</item>
+        <item>Ой, что-то у меня глаз дергается</item>
+        <item>Дамы, господа, лебеди, лисы, муравьи</item>
+        <item>Быть или не быть, вот в чем вопрос</item>
+        <item>Найдите в стихах спасение от бренности жизни</item>
+    </string-array>
+
+    <string-array name="hanna_greetings">
+        <item>Бонжур, я Ханна.</item>
+        <item>Как вам моя новая прическа? Последий писк моды</item>
+        <item>Хотите дам автограф? По одному на человека</item>
+        <item>Стихи - для высшего общества</item>
+        <item>И что это за странная музыка? Почему не классика</item>
+        <item>Семья или карьера? Я предпочту театр.</item>
+    </string-array>
+
+    <string-array name="tomiko_greetings">
+        <item>Приветик, я Томико.</item>
+        <item>Не хотите послушать грустные стихи?</item>
+        <item>Стихи и вино - вот так я провожу вечера</item>
+        <item>Печаль - мой эмпульс для творчества</item>
+        <item>Я Томико и мне грустно. </item>
+        <item>Не такайте на меня, я стесняюсь</item>
+        <item>Я лучше помолчу. ___________</item>
+    </string-array>
+
+    <string-array name="tara_greetings">
+        <item>Йо, я Тарo.</item>
+        <item>Опять читать стихи? Го лучше на реп-батл!</item>
+        <item>Я вообще больше реп люблю.</item>
+        <item>Как дела братунь? Как на районе?</item>
+        <item>Гоу тусить с Таро.</item>
+        <item>Это таро, таро 47</item>
+        <item>Будь братом, поставь пятюню приложению!</item>
+    </string-array>
 </resources>

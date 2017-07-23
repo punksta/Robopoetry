@@ -14,8 +14,13 @@ sealed class PlayerTask(val voice: String)
 class CelebrationTask(voice: String,
                   val celebrationItem: CelebrationItem,
                   val userName: String,
-                      val celebration: Celebration) : PlayerTask(voice)
+                  val celebration: Celebration) : PlayerTask(voice)
 
 class PoemTask(voice: String,
                val poem: Poem,
                val writer: WriterInfo) : PlayerTask(voice)
+
+
+class GreetingTask(voice: String,
+                   val name: String,
+                   val greeting: String) : PlayerTask(voice)

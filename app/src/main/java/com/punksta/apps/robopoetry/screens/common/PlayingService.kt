@@ -33,6 +33,8 @@ const val EXTRA_VOICE = "voice"
 const val EXTRA_WRITER = "writer"
 const val EXTRA_CELEBRATION = "celebration"
 
+const val EXTRA_ROBOT_NAME = "RobotName"
+const val EXTRA_ROBOT_GREETING= "RobotGreeting"
 const val EXTRA_STATUS = "status"
 
 const val ACTION_PLAY = "play"
@@ -78,6 +80,13 @@ class PlayingService: Service(), VocalizerListener {
                         .putExtra(EXTRA_USER_NAME, t.userName)
                 )
             }
+            is GreetingTask -> {
+                sendBroadcast(Intent(BRODCAST_ACTION)
+                        .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_BEGIN)
+                        .putExtra(EXTRA_ROBOT_NAME, t.name)
+                        .putExtra(EXTRA_ROBOT_GREETING, t.greeting)
+                )
+            }
         }
 
     }
@@ -105,6 +114,13 @@ class PlayingService: Service(), VocalizerListener {
                         .putExtra(EXTRA_CELEBRATION, t.celebration)
                         .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
                         .putExtra(EXTRA_USER_NAME, t.userName)
+                )
+            }
+            is GreetingTask -> {
+                sendBroadcast(Intent(BRODCAST_ACTION)
+                        .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
+                        .putExtra(EXTRA_ROBOT_NAME, t.name)
+                        .putExtra(EXTRA_ROBOT_GREETING, t.greeting)
                 )
             }
         }
@@ -157,6 +173,13 @@ class PlayingService: Service(), VocalizerListener {
                         .putExtra(EXTRA_USER_NAME, t.userName)
                 )
             }
+            is GreetingTask -> {
+                sendBroadcast(Intent(BRODCAST_ACTION)
+                        .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_ERROR)
+                        .putExtra(EXTRA_ROBOT_NAME, t.name)
+                        .putExtra(EXTRA_ROBOT_GREETING, t.greeting)
+                )
+            }
         }
 
         stopBackgroundPlaying()
@@ -191,7 +214,7 @@ class PlayingService: Service(), VocalizerListener {
     private fun onGetAction(intent: Intent?) {
         Log.v(javaClass.simpleName, intent?.action)
 
-        val t= lastTask
+        val t = lastTask
 
         when (intent?.action) {
             null, ACTION_STOP -> {
@@ -211,6 +234,13 @@ class PlayingService: Service(), VocalizerListener {
                                 .putExtra(EXTRA_CELEBRATION, t.celebration)
                                 .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
                                 .putExtra(EXTRA_USER_NAME, t.userName)
+                        )
+                    }
+                    is GreetingTask -> {
+                        sendBroadcast(Intent(BRODCAST_ACTION)
+                                .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
+                                .putExtra(EXTRA_ROBOT_NAME, t.name)
+                                .putExtra(EXTRA_ROBOT_GREETING, t.greeting)
                         )
                     }
                 }
@@ -233,8 +263,14 @@ class PlayingService: Service(), VocalizerListener {
                                     .putExtra(EXTRA_USER_NAME, t.userName)
                             )
                         }
+                        is GreetingTask -> {
+                            sendBroadcast(Intent(BRODCAST_ACTION)
+                                    .putExtra(EXTRA_STATUS, lastAction)
+                                    .putExtra(EXTRA_ROBOT_NAME, t.name)
+                                    .putExtra(EXTRA_ROBOT_GREETING, t.greeting)
+                            )
+                        }
                     }
-
                 }
             }
             ACTION_PLAY -> {
@@ -260,6 +296,18 @@ class PlayingService: Service(), VocalizerListener {
                         val userName = intent.getStringExtra(EXTRA_USER_NAME)
                         lastTask = CelebrationTask(voice, celebrationItem, userName, celebration)
                         val text = "$userName, Поздравляю с ${getString(celebration.name)}. ${celebrationItem.celebrationText}"
+                        clearVocalizer()
+                        vocolizer = Vocalizer.createVocalizer(Vocalizer.Language.RUSSIAN, text, true, voice).apply {
+                            setListener(this@PlayingService)
+                            start()
+                        }
+                    }
+                    intent.hasExtra(EXTRA_ROBOT_NAME) -> {
+                        val voice = intent.getStringExtra(EXTRA_VOICE)!!
+                        val robotName = intent.getStringExtra(EXTRA_ROBOT_NAME)!!
+                        val robotGreeting = intent.getStringExtra(EXTRA_ROBOT_GREETING)!!
+                        lastTask = GreetingTask(voice, robotName, robotGreeting)
+                        val text = robotGreeting
                         clearVocalizer()
                         vocolizer = Vocalizer.createVocalizer(Vocalizer.Language.RUSSIAN, text, true, voice).apply {
                             setListener(this@PlayingService)
