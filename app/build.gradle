@@ -9,10 +9,13 @@ android {
         applicationId "com.punksta.apps.robopoetry"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 7
+        versionCode 8
         versionName "1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+    }
+    lintOptions {
+        disable 'MissingTranslation'
     }
     buildTypes {
         release {
