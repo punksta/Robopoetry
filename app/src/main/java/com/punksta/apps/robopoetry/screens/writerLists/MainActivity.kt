@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), (Entity) -> Unit {
     private var disposableUpdate: Disposable? = null
 
     val celebration: List<Celebration>
-        get() = listOf(March8)
+        get() = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
