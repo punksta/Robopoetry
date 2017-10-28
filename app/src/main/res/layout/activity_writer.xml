@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sheme_backbround"
+    tools:context="com.punksta.apps.robopoetry.screens.writer.WriterActivity">
+
+
+    <include
+        layout="@layout/layout_cabel"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/stop_button"
+        android:layout_alignBottom="@+id/filter_by_name"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="-13dp"
+        />
+
+    <include
+        layout="@layout/layout_cabel"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/stop_button"
+        android:layout_alignBottom="@+id/filter_by_name"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="-18dp"
+        />
+
+    <include
+        layout="@layout/layout_cabel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/filter_by_name"
+        android:layout_alignEnd="@+id/filter_by_name"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="30dp" />
+
+    <Button
+        android:id="@+id/stop_button"
+        android:text="@string/button_stop"
+        android:layout_alignTop="@+id/filter_by_name"
+        android:layout_alignParentEnd="true"
+        android:typeface="monospace"
+        android:enabled="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <include
+        layout="@layout/layout_cabel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignEnd="@+id/filter_by_name"
+        android:layout_alignBottom="@+id/filter_by_name"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="35dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/filter_by_name"
+        android:layout_alignEnd="@+id/filter_by_name"
+        android:layout_alignStart="@+id/filter_by_name"
+        android:layout_alignTop="@+id/filter_by_name"
+
+        android:background="@drawable/terminal_corners"
+
+
+        android:scaleType="centerCrop"
+        android:src="@drawable/terminal_background" />
+
+    <EditText
+        android:id="@+id/filter_by_name"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_toStartOf="@+id/stop_button"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="29dp"
+        android:background="@android:color/transparent"
+        android:hint="@string/search"
+        android:inputType="text|textFilter"
+        android:lines="1"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp" />
+
+    <include
+        layout="@layout/layout_cabel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/screen"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="25dp" />
+
+    <include
+        layout="@layout/layout_cabel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/screen"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="20dp" />
+
+    <include
+        layout="@layout/layout_cabel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/screen"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="15dp" />
+
+    <include
+        layout="@layout/layout_cabel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/screen"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="10dp" />
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/screen"
+        android:layout_alignEnd="@+id/screen"
+        android:layout_alignStart="@+id/screen"
+        android:layout_alignTop="@+id/screen"
+        android:layout_marginBottom="1dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/terminal_background" />
+
+
+    <LinearLayout
+        android:id="@+id/screen"
+        android:layout_below="@+id/filter_by_name"
+        android:layout_above="@+id/speakers"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/poems_items"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:clipToPadding="false"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingTop="14dp" />
+
+
+    </LinearLayout>
+
+
+    <com.punksta.apps.robopoetry.screens.common.SpeackersView
+        android:id="@+id/speakers"
+        android:clipToPadding="false"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

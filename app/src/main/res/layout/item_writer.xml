@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/name"
+        android:textSize="18sp"
+        android:layout_toStartOf="@+id/count"
+        android:layout_marginEnd="18dp"
+        android:textColor="@color/terminal_text_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/count"
+        android:textSize="18sp"
+        android:textColor="@color/terminal_text_color"
+
+        android:text="123"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+    <View
+        android:id="@+id/deliver"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/name"
+        android:background="@color/terminal_text_color"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+</RelativeLayout>

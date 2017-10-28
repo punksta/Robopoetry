@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#050a28</color>
+    <color name="colorAccent">#0fdc01</color>
+
+    <color name="terminal_text_color">#d7d400</color>
+    <color name="threadColor">#b1d110</color>
+    <color name="threadColorCorner">#7b910c</color>
+
+</resources>
