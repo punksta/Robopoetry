@@ -45,9 +45,9 @@ class PoemAdapter(val items: MutableList<EntityItem>, val poemListener: (EntityI
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PoemViewHolder  =
         LayoutInflater.from(parent!!.context).inflate(R.layout.item_poem, parent, false)
                 .let { PoemViewHolder(it,
-                        it.findViewById(R.id.name) as TextView,
-                        it.findViewById(R.id.year) as TextView,
-                        it.findViewById(R.id.text) as TextView) }
+                        it.findViewById(R.id.name),
+                        it.findViewById(R.id.year),
+                        it.findViewById(R.id.text)) }
                 .apply {
                     name.setTypeFace("clacon.ttf")
                     year.setTypeFace("clacon.ttf")

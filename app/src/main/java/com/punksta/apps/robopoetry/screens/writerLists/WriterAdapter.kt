@@ -69,7 +69,7 @@ class WriterAdapter(var headers: List<Celebration>, var items: MutableList<Write
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder = when (viewType) {
         typeWriter -> {
             LayoutInflater.from(parent!!.context).inflate(R.layout.item_writer, parent, false)
-                    .let { WriterVH(it, it.findViewById(R.id.name) as TextView, it.findViewById(R.id.count) as TextView, it.findViewById(R.id.deliver)) }
+                    .let { WriterVH(it, it.findViewById(R.id.name), it.findViewById(R.id.count), it.findViewById(R.id.deliver)) }
                     .apply {
                         name.setTypeFace("clacon.ttf")
                         count.setTypeFace("clacon.ttf")
@@ -77,7 +77,7 @@ class WriterAdapter(var headers: List<Celebration>, var items: MutableList<Write
         }
         typeHeader -> {
             LayoutInflater.from(parent!!.context).inflate(R.layout.item_celebration_8, parent, false)
-                    .let { HeaderVH(it, it.findViewById(R.id.name) as TextView) }
+                    .let { HeaderVH(it, it.findViewById(R.id.name)) }
                     .apply {
                         name.setTypeFace("clacon.ttf")
                     }

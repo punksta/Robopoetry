@@ -48,9 +48,9 @@ class SpeackersView : HorizontalScrollView {
         list.map { l ->
             LayoutInflater.from(context).inflate(R.layout.item_speaker, linearLayout, false)
                     .apply {
-                        (findViewById(R.id.speaker_name) as TextView).setTypeFace("clacon.ttf")
-                        (findViewById(R.id.speaker_name) as TextView).text = context.getString(l.nameId)
-                        val image = (findViewById(R.id.speaker_image) as ImageView)
+                        (findViewById<TextView>(R.id.speaker_name)).setTypeFace("clacon.ttf")
+                        (findViewById<TextView>(R.id.speaker_name) as TextView).text = context.getString(l.nameId)
+                        val image = (findViewById<ImageView>(R.id.speaker_image))
 
                         requestManager.load(l.drawableId)
                                 .fit()

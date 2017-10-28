@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.method.LinkMovementMethod
+import android.view.View
 import android.view.View.TEXT_ALIGNMENT_CENTER
 import android.widget.Button
 import android.widget.TextView
@@ -72,14 +73,14 @@ class MainActivity : AppCompatActivity(), (Entity) -> Unit {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        (findViewById(R.id.filter_by_name) as TextView).setTypeFace("clacon.ttf")
-        (findViewById(R.id.writers_item) as RecyclerView).run {
+        (findViewById<TextView>(R.id.filter_by_name)).setTypeFace("clacon.ttf")
+        (findViewById<RecyclerView>(R.id.writers_item)).run {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = WriterAdapter(celebration, ArrayList(), this@MainActivity)
         }
 
         Fabric.with(this, Crashlytics(), Beta())
-        findViewById(R.id.info_button).setOnClickListener {
+        findViewById<View>(R.id.info_button).setOnClickListener {
             showSourceDialog()
         }
     }
@@ -97,14 +98,14 @@ class MainActivity : AppCompatActivity(), (Entity) -> Unit {
 //                    }
 //        }
         disposableUpdate?.dispose()
-        disposableUpdate = (findViewById(R.id.filter_by_name) as TextView)
+        disposableUpdate = (findViewById<TextView>(R.id.filter_by_name))
                 .textChangesEvents(true)
                 .flatMap {
                     getModel().queryWriters(it).toObservable()
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({list ->
-                    ((findViewById(R.id.writers_item) as RecyclerView).adapter as WriterAdapter).change(list)
+                    ((findViewById<RecyclerView>(R.id.writers_item)).adapter as WriterAdapter).change(list)
                 })
     }
 

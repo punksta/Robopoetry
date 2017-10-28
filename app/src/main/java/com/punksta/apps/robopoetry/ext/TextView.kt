@@ -49,7 +49,7 @@ fun TextView.textChangesEvents(emmitFirst: Boolean = false) : Observable<String>
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                it.onNext(s?.toString()?.orEmpty())
+                it.onNext(s?.toString().orEmpty())
             }
         }
         addTextChangedListener(textWatcher)

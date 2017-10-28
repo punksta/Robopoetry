@@ -35,7 +35,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
     private val brodcast = PlayingBroadcastReceiver()
 
     private val button: Button
-        get() = findViewById(R.id.stop_button) as Button
+        get() = findViewById(R.id.stop_button)
 
     private val writer: WriterInfo?
         get() = intent.getParcelableExtra<WriterInfo>("writer")
@@ -44,7 +44,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         get() = intent.getParcelableExtra("celebration")
 
     private val speckers: SpeackersView
-        get() = findViewById(R.id.speakers) as SpeackersView
+        get() = findViewById(R.id.speakers)
 
 
     fun getCurrentVoice() : String{
@@ -68,7 +68,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                         .putExtra(EXTRA_VOICE, voice)
                         .putExtra(EXTRA_CELEBRATION, celebration)
                         .putExtra(EXTRA_CELEBRATION_ITEM, p1)
-                        .putExtra(EXTRA_USER_NAME, (findViewById(R.id.filter_by_name) as TextView).text.toString())
+                        .putExtra(EXTRA_USER_NAME, (findViewById<TextView>(R.id.filter_by_name)).text.toString())
                 )
             }
         }
@@ -90,9 +90,9 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         overridePendingTransition(R.anim.left_in, R.anim.left_out);
 
 
-        (findViewById(R.id.filter_by_name) as TextView).setTypeFace("clacon.ttf")
+        (findViewById<TextView>(R.id.filter_by_name)).setTypeFace("clacon.ttf")
 
-        (findViewById(R.id.poems_items) as RecyclerView).layoutManager = LinearLayoutManager(this)
+        (findViewById<RecyclerView>(R.id.poems_items)).layoutManager = LinearLayoutManager(this)
 
         val s = speckers
 
@@ -151,32 +151,32 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         val c = celebration
         when {
             w != null -> {
-                (findViewById(R.id.filter_by_name) as TextView).setHint(R.string.search)
+                (findViewById<TextView>(R.id.filter_by_name)).setHint(R.string.search)
 
                 if (loaded.not()) {
                     load = getModel().queryPoems(writerId = w.id, cutLimit = 40)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe { list ->
-                                (findViewById(R.id.poems_items) as RecyclerView).adapter = PoemAdapter(list.toMutableList(), this)
+                                (findViewById<RecyclerView>(R.id.poems_items)).adapter = PoemAdapter(list.toMutableList(), this)
                             }
                 }
-                update = (findViewById(R.id.filter_by_name) as TextView).textChangesEvents(false)
+                update = (findViewById<TextView>(R.id.filter_by_name)).textChangesEvents(false)
                         .flatMap { getModel().queryPoems(writerId = w.id, query = it, cutLimit = 40).toObservable() }
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { list ->
-                            ((findViewById(R.id.poems_items) as RecyclerView).adapter as PoemAdapter).update(list)
+                            ((findViewById<RecyclerView>(R.id.poems_items)).adapter as PoemAdapter).update(list)
                         }
             }
             c != null -> {
-                (findViewById(R.id.filter_by_name) as TextView).setHint(R.string.name)
+                (findViewById<TextView>(R.id.filter_by_name)).setHint(R.string.name)
 
                 getModel().getCelebration(c)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { list ->
-                            (findViewById(R.id.poems_items) as RecyclerView).adapter = PoemAdapter(list.toMutableList(), this)
+                            (findViewById<RecyclerView>(R.id.poems_items)).adapter = PoemAdapter(list.toMutableList(), this)
                         }
             }
             else -> {
