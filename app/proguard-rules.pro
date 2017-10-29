@@ -35,3 +35,4 @@
   public *;
 }
 -dontwarn com.squareup.okhttp.**
+-dontwarn org.apache.**
