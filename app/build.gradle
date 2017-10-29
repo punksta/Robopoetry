@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
 
-def baseVersionCode = 8
+def baseVersionCode = 9
 
 
 android {
@@ -14,7 +14,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 26
         versionCode baseVersionCode
-        versionName "1.3"
+        versionName "1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
