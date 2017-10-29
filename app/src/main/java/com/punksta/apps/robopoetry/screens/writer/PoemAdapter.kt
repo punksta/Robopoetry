@@ -6,16 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.punksta.apps.robopoetry.R
-import com.punksta.apps.robopoetry.entity.Celebration
 import com.punksta.apps.robopoetry.entity.CelebrationItem
 import com.punksta.apps.robopoetry.entity.EntityItem
 import com.punksta.apps.robopoetry.entity.Poem
-import com.punksta.apps.robopoetry.ext.setTypeFace
 
 /**
  * Created by stanislav on 1/2/17.
  */
-
 
 
 class PoemViewHolder(view: View, val name: TextView, val year: TextView, val cutTextView: TextView) : RecyclerView.ViewHolder(view)
@@ -40,19 +37,17 @@ class PoemAdapter(val items: MutableList<EntityItem>, val poemListener: (EntityI
         }
     }
 
-    override fun getItemCount(): Int  = items.count()
+    override fun getItemCount(): Int = items.count()
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PoemViewHolder  =
-        LayoutInflater.from(parent!!.context).inflate(R.layout.item_poem, parent, false)
-                .let { PoemViewHolder(it,
-                        it.findViewById(R.id.name),
-                        it.findViewById(R.id.year),
-                        it.findViewById(R.id.text)) }
-                .apply {
-                    name.setTypeFace("clacon.ttf")
-                    year.setTypeFace("clacon.ttf")
-                    cutTextView.setTypeFace("clacon.ttf")
-                }
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PoemViewHolder =
+            LayoutInflater.from(parent!!.context).inflate(R.layout.item_poem, parent, false)
+                    .let {
+                        PoemViewHolder(it,
+                                it.findViewById(R.id.name),
+                                it.findViewById(R.id.year),
+                                it.findViewById(R.id.text)
+                        )
+                    }
 
     fun update(list: List<Poem>) {
         items.clear()

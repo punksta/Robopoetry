@@ -10,6 +10,7 @@
         android:text="@string/mart8"
         android:id="@+id/name"
         android:gravity="center_horizontal"
+        android:fontFamily="@font/clacon_normal"
         android:textSize="25sp"
         android:textColor="@color/terminal_text_color"
         android:layout_width="match_parent"

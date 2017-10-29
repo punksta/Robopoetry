@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.TextView
 import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.entity.*
-import com.punksta.apps.robopoetry.ext.setTypeFace
 import com.punksta.apps.robopoetry.ext.textChangesEvents
 import com.punksta.apps.robopoetry.model.Robot
 import com.punksta.apps.robopoetry.model.Voice
@@ -90,7 +89,6 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         overridePendingTransition(R.anim.left_in, R.anim.left_out);
 
 
-        (findViewById<TextView>(R.id.filter_by_name)).setTypeFace("clacon.ttf")
 
         (findViewById<RecyclerView>(R.id.poems_items)).layoutManager = LinearLayoutManager(this)
 
@@ -112,7 +110,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         }
     }
 
-    fun notifyRobotChange (robot: Robot) {
+    private fun notifyRobotChange (robot: Robot) {
         speckers.clearSpeacking()
 
         startService(Intent(this, PlayingService::class.java)

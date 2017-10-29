@@ -11,30 +11,6 @@ import io.reactivex.Observable
  * Created by stanislav on 1/2/17.
  */
 
-private val cache = mutableMapOf<String, Typeface>()
-private val monitor = Object()
-
-private fun getTypeFace(name: String, context: Context): Typeface? {
-    return synchronized(monitor) {
-        if (cache.containsKey(name))
-            cache[name]
-        else {
-            try {
-                val t = Typeface.createFromAsset(context.assets, "fonts/$name")
-                cache[name] = t
-                t
-            } catch (th: Throwable) {
-                th.printStackTrace()
-                null
-            }
-        }
-    }
-}
-
-fun TextView.setTypeFace(name: String) {
-    getTypeFace(name, context)?.let { typeface = it }
-}
-
 
 fun TextView.textChangesEvents(emmitFirst: Boolean = false) : Observable<String> {
     return Observable.create {

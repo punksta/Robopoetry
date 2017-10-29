@@ -3,6 +3,7 @@ package com.punksta.apps.robopoetry.screens.writerLists
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.LinearLayoutManager
@@ -20,7 +21,6 @@ import com.punksta.apps.robopoetry.entity.Celebration
 import com.punksta.apps.robopoetry.entity.Entity
 import com.punksta.apps.robopoetry.entity.March8
 import com.punksta.apps.robopoetry.entity.WriterInfo
-import com.punksta.apps.robopoetry.ext.setTypeFace
 import com.punksta.apps.robopoetry.ext.textChangesEvents
 import com.punksta.apps.robopoetry.model.DataModel
 import com.punksta.apps.robopoetry.model.getModel
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), (Entity) -> Unit {
 
         val textView = HtmlTextView(this)
 
-        textView.setTypeFace("clacon.ttf")
+        textView.typeface = ResourcesCompat.getFont(this, R.font.clacon_normal)
         textView.movementMethod = LinkMovementMethod.getInstance();
         textView.autoLinkMask
         textView.setHtml(R.raw.info, HtmlHttpImageGetter(textView))
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), (Entity) -> Unit {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        (findViewById<TextView>(R.id.filter_by_name)).setTypeFace("clacon.ttf")
+        (findViewById<TextView>(R.id.filter_by_name))
         (findViewById<RecyclerView>(R.id.writers_item)).run {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = WriterAdapter(celebration, ArrayList(), this@MainActivity)

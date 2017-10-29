@@ -13,10 +13,8 @@ import android.widget.TextView
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.punksta.apps.robopoetry.R
-import com.punksta.apps.robopoetry.ext.setTypeFace
 import com.punksta.apps.robopoetry.model.Robot
 import com.squareup.picasso.Picasso
-import ru.yandex.speechkit.Vocalizer
 
 /**
  * Created by stanislav on 1/2/17.
@@ -48,7 +46,7 @@ class SpeackersView : HorizontalScrollView {
         list.map { l ->
             LayoutInflater.from(context).inflate(R.layout.item_speaker, linearLayout, false)
                     .apply {
-                        (findViewById<TextView>(R.id.speaker_name)).setTypeFace("clacon.ttf")
+                        (findViewById<TextView>(R.id.speaker_name))
                         (findViewById<TextView>(R.id.speaker_name) as TextView).text = context.getString(l.nameId)
                         val image = (findViewById<ImageView>(R.id.speaker_image))
 

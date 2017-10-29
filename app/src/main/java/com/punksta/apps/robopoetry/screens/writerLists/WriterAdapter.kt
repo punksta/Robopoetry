@@ -11,8 +11,6 @@ import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.entity.Celebration
 import com.punksta.apps.robopoetry.entity.Entity
 import com.punksta.apps.robopoetry.entity.WriterInfo
-import com.punksta.apps.robopoetry.ext.setTypeFace
-import org.w3c.dom.Text
 
 /**
  * Created by stanislav on 1/2/17.
@@ -70,17 +68,12 @@ class WriterAdapter(var headers: List<Celebration>, var items: MutableList<Write
         typeWriter -> {
             LayoutInflater.from(parent!!.context).inflate(R.layout.item_writer, parent, false)
                     .let { WriterVH(it, it.findViewById(R.id.name), it.findViewById(R.id.count), it.findViewById(R.id.deliver)) }
-                    .apply {
-                        name.setTypeFace("clacon.ttf")
-                        count.setTypeFace("clacon.ttf")
-                    }
+
         }
         typeHeader -> {
             LayoutInflater.from(parent!!.context).inflate(R.layout.item_celebration_8, parent, false)
                     .let { HeaderVH(it, it.findViewById(R.id.name)) }
-                    .apply {
-                        name.setTypeFace("clacon.ttf")
-                    }
+
         }
         else -> throw IllegalArgumentException("unknown type")
     }

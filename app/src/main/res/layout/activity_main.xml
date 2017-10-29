@@ -23,9 +23,11 @@
     <Button
         android:id="@+id/info_button"
         android:text="@string/button_info"
+        android:fontFamily="@font/clacon_normal"
         android:layout_alignTop="@+id/filter_by_name"
         android:layout_alignParentEnd="true"
         android:typeface="monospace"
+        android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -63,6 +65,8 @@
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
         android:hint="@string/search"
+        android:fontFamily="@font/clacon"
+
         android:inputType="text|textFilter"
         android:lines="1"
         android:paddingEnd="16dp"

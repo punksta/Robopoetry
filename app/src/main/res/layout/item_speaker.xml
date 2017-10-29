@@ -16,6 +16,7 @@
         android:layout_marginTop="8dp"
         android:textColor="@color/threadColor"
         android:id="@+id/speaker_name"
+        android:fontFamily="@font/clacon_normal"
         android:textSize="16sp"
         android:lines="2"
         android:gravity="center"
