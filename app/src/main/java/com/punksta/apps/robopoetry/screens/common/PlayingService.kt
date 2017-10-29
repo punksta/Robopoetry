@@ -212,7 +212,8 @@ class PlayingService: Service(), VocalizerListener {
     }
 
     private fun onGetAction(intent: Intent?) {
-        Log.v(javaClass.simpleName, intent?.action)
+        if (intent?.action != null)
+            Log.v(javaClass.simpleName, intent.action)
 
         val t = lastTask
 
