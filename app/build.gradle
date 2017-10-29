@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
+
+def baseVersionCode = 8
+
+
 android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
@@ -9,7 +13,7 @@ android {
         applicationId "com.punksta.apps.robopoetry"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 8
+        versionCode baseVersionCode
         versionName "1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -32,7 +36,35 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+    dexOptions {
+        javaMaxHeapSize "2g"
+    }
+
+    flavorDimensions "minApi"
+
+    productFlavors {
+
+        minApi26 {
+            dimension "minApi"
+            minSdkVersion 26
+            versionCode = 10*baseVersionCode + 1
+        }
+
+        minApi21 {
+            dimension "minApi"
+            minSdkVersion 21
+            versionCode 10*baseVersionCode + 2
+        }
+
+        minApi17 {
+            dimension "minApi"
+            minSdkVersion 17
+            versionCode 10*baseVersionCode + 3
+        }
+    }
 }
+
+
 apply plugin: 'kotlin-kapt'
 
 dependencies {
