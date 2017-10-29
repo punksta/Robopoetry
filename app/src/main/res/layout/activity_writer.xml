@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,34 +9,33 @@
     tools:context="com.punksta.apps.robopoetry.screens.writer.WriterActivity">
 
 
-    <include
-        layout="@layout/layout_cabel"
-        android:layout_width="20dp"
-        android:layout_height="wrap_content"
+    <com.punksta.apps.robopoetry.BottomLeftCornerView
+        app:strokeWidth="1.5dp"
+        android:layout_alignBottom="@+id/filter_by_name"
+        app:data="30,5; 35,10"
+        app:color="@color/threadColor"
+        android:layout_width="40dp"
+        android:layout_height="match_parent" />
+
+    <com.punksta.apps.robopoetry.BottomLeftCornerView
+        app:strokeWidth="1.5dp"
+        app:data="25,20; 20,15; 15,10; 10,5"
+        android:layout_alignBottom="@+id/screen"
+        app:color="@color/threadColor"
+        android:layout_width="40dp"
+        android:layout_height="match_parent" />
+
+    <com.punksta.apps.robopoetry.BottomLeftCornerView
+        android:layout_width="30dp"
+        android:layout_marginEnd="-10dp"
         android:layout_toStartOf="@+id/stop_button"
         android:layout_alignBottom="@+id/filter_by_name"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="-13dp"
-        />
+        app:strokeWidth="1.5dp"
+        app:data="13.5,10; 18.5,15"
+        app:color="@color/threadColor"
+        android:layout_height="150dp" />
 
-    <include
-        layout="@layout/layout_cabel"
-        android:layout_width="20dp"
-        android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/stop_button"
-        android:layout_alignBottom="@+id/filter_by_name"
-        android:layout_marginBottom="15dp"
-        android:layout_marginEnd="-18dp"
-        />
 
-    <include
-        layout="@layout/layout_cabel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/filter_by_name"
-        android:layout_alignEnd="@+id/filter_by_name"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="30dp" />
 
     <Button
         android:id="@+id/stop_button"
@@ -47,14 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <include
-        layout="@layout/layout_cabel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignEnd="@+id/filter_by_name"
-        android:layout_alignBottom="@+id/filter_by_name"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="35dp" />
+
 
     <ImageView
         android:layout_width="match_parent"
@@ -85,37 +78,7 @@
         android:paddingEnd="16dp"
         android:paddingStart="16dp" />
 
-    <include
-        layout="@layout/layout_cabel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/screen"
-        android:layout_marginBottom="20dp"
-        android:layout_marginStart="25dp" />
 
-    <include
-        layout="@layout/layout_cabel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/screen"
-        android:layout_marginBottom="15dp"
-        android:layout_marginStart="20dp" />
-
-    <include
-        layout="@layout/layout_cabel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/screen"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="15dp" />
-
-    <include
-        layout="@layout/layout_cabel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/screen"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="10dp" />
 
 
     <ImageView

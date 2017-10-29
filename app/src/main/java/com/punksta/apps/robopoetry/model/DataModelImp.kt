@@ -7,11 +7,9 @@ import android.view.inputmethod.InputMethodManager
 import com.crashlytics.android.Crashlytics
 import com.fasterxml.jackson.core.*
 import com.opencsv.CSVReader
-import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.entity.*
 import io.reactivex.Observable
 import io.reactivex.Single
-import ru.yandex.speechkit.Vocalizer
 import java.io.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -41,17 +39,21 @@ class DataModelImp(context: Context) : DataModel {
 
     private val translate : Itranliteration = NaiveTransliteration()
 
-    private inline fun keyBoardgetLocal() : Locale {
-        val imm = app.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        val ims = imm.currentInputMethodSubtype
-        val locale =  ims.locale
-        return Locale(locale)
+    private inline fun getKeyboardLocale() : Locale? {
+        return try {
+            val imm = app.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val ims = imm.currentInputMethodSubtype
+            val locale = ims.locale
+            Locale(locale)
+        } catch (e: Throwable) {
+            null
+        }
     }
 
     private fun transform(query: String?): String? {
         return when {
             query == null -> null
-            keyBoardgetLocal().displayLanguage == "русский" -> query
+            getKeyboardLocale()?.displayLanguage?.toLowerCase() == "русский" -> query
             else -> {
                 Crashlytics.log(0, "transform", query)
                 translate.latToCyr(query)

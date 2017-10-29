@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import com.punksta.apps.robopoetry.ext.pxFromDp
+
 
 /**
  * Created by stanislav on 10/28/17.
@@ -27,17 +29,41 @@ class BottomLeftCornerView @JvmOverloads constructor(
     /**
      *  [(x, y), (x1, y1)]
      *
-     *  x - percent of view width where corner begins
-     *  y - percent of view height where corners ends
+     *  x - x offset from left where corner begins
+     *  y - y offset from bottom where corners ends
      */
-    private var corners : List<Pair<Float, Float>> = listOf(0.5f to 0.5f)
+    private var corners : List<Pair<Float, Float>> = emptyList()
 
 
     private val paint = Paint()
 
     init {
-        paint.color = Color.WHITE
-        paint.strokeWidth = 20f
+
+
+        when (attrs) {
+            null -> {
+                paint.color = Color.WHITE
+                paint.strokeWidth = 20f
+            }
+            else -> {
+                val a = context.theme.obtainStyledAttributes(
+                        attrs,
+                        R.styleable.BottomLeftCornerView,
+                        0, 0
+                )
+
+                paint.color = a.getColor(R.styleable.BottomLeftCornerView_color, Color.WHITE);
+                paint.strokeWidth = a.getDimension(R.styleable.BottomLeftCornerView_strokeWidth, 1f);
+
+                corners = (a.getString(R.styleable.BottomLeftCornerView_data) ?: "")
+                        .filter { it != ' ' }
+                        .split(";")
+                        .map { it.split(",") }
+                        .map { pxFromDp(it[0].toFloat()) to pxFromDp(it[1].toFloat()) }
+
+                a.recycle()
+            }
+        }
     }
 
     fun setCorners(corners: List<Pair<Float, Float>>) {
@@ -54,13 +80,14 @@ class BottomLeftCornerView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        corners.forEach { (startXPercent, endYPercent) ->
-            val startX = this.width * startXPercent
-            val endY = this.height * endYPercent
-            val endX = this.width
+        val circleRadius = paint.strokeWidth / 2
+
+        corners.forEach { (startX, bottomMargin) ->
+            val endY = this.height - bottomMargin
+            val endX = this.width.toFloat()
             canvas.drawLine(startX, 0f, startX, endY, paint)
-            canvas.drawLine(startX, endY, endX.toFloat(), endY, paint)
-            canvas.drawCircle(startX, endY, paint.strokeWidth / 2, paint)
+            canvas.drawLine(startX, endY, endX, endY, paint)
+            canvas.drawCircle(startX, endY, circleRadius, paint)
         }
     }
 }
