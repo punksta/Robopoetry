@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
 
-def baseVersionCode = 9
+def baseVersionCode = 10
 
 
 android {
@@ -44,10 +44,10 @@ android {
 
     productFlavors {
 
-        minApi26 {
+        minApi17 {
             dimension "minApi"
-            minSdkVersion 26
-            versionCode = 10*baseVersionCode + 1
+            minSdkVersion 17
+            versionCode 10*baseVersionCode + 1
         }
 
         minApi21 {
@@ -56,10 +56,10 @@ android {
             versionCode 10*baseVersionCode + 2
         }
 
-        minApi17 {
+        minApi26 {
             dimension "minApi"
-            minSdkVersion 17
-            versionCode 10*baseVersionCode + 3
+            minSdkVersion 26
+            versionCode = 10*baseVersionCode + 3
         }
     }
 }
