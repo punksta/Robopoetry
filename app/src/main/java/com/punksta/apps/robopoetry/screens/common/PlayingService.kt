@@ -2,21 +2,16 @@ package com.punksta.apps.robopoetry.screens.common
 
 import android.app.Service
 import android.content.Intent
-import android.content.res.AssetFileDescriptor
 import android.media.MediaPlayer
-import android.os.Handler
 import android.os.IBinder
+import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.punksta.apps.robopoetry.entity.Celebration
 import com.punksta.apps.robopoetry.entity.CelebrationItem
 import com.punksta.apps.robopoetry.entity.Poem
 import com.punksta.apps.robopoetry.entity.WriterInfo
 import com.punksta.apps.robopoetry.screens.common.PlayingBroadcastReceiver.Companion.BRODCAST_ACTION
-import ru.yandex.speechkit.Error
-import ru.yandex.speechkit.SpeechKit
-import ru.yandex.speechkit.Synthesis
-import ru.yandex.speechkit.Vocalizer
-import ru.yandex.speechkit.VocalizerListener
+import ru.yandex.speechkit.*
 
 
 /**
@@ -66,14 +61,14 @@ class PlayingService: Service(), VocalizerListener {
         val t = lastTask
         when (t) {
             is PoemTask -> {
-                sendBroadcast(Intent(BRODCAST_ACTION)
+                sendStatusBrodcast(Intent(BRODCAST_ACTION)
                         .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_BEGIN)
                         .putExtra(EXTRA_POEM, t.poem)
                         .putExtra(EXTRA_WRITER, t.writer)
                 )
             }
             is CelebrationTask -> {
-                sendBroadcast(Intent(BRODCAST_ACTION)
+                sendStatusBrodcast(Intent(BRODCAST_ACTION)
                         .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_BEGIN)
                         .putExtra(EXTRA_CELEBRATION, t.celebration)
                         .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
@@ -81,7 +76,7 @@ class PlayingService: Service(), VocalizerListener {
                 )
             }
             is GreetingTask -> {
-                sendBroadcast(Intent(BRODCAST_ACTION)
+                sendStatusBrodcast(Intent(BRODCAST_ACTION)
                         .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_BEGIN)
                         .putExtra(EXTRA_ROBOT_NAME, t.name)
                         .putExtra(EXTRA_ROBOT_GREETING, t.greeting)
@@ -102,14 +97,14 @@ class PlayingService: Service(), VocalizerListener {
         val t = lastTask
         when (t) {
             is PoemTask -> {
-                sendBroadcast(Intent(BRODCAST_ACTION)
+                sendStatusBrodcast(Intent(BRODCAST_ACTION)
                         .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
                         .putExtra(EXTRA_POEM, t.poem)
                         .putExtra(EXTRA_WRITER, t.writer)
                 )
             }
             is CelebrationTask -> {
-                sendBroadcast(Intent(BRODCAST_ACTION)
+                sendStatusBrodcast(Intent(BRODCAST_ACTION)
                         .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
                         .putExtra(EXTRA_CELEBRATION, t.celebration)
                         .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
@@ -117,7 +112,7 @@ class PlayingService: Service(), VocalizerListener {
                 )
             }
             is GreetingTask -> {
-                sendBroadcast(Intent(BRODCAST_ACTION)
+                sendStatusBrodcast(Intent(BRODCAST_ACTION)
                         .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
                         .putExtra(EXTRA_ROBOT_NAME, t.name)
                         .putExtra(EXTRA_ROBOT_GREETING, t.greeting)
@@ -159,14 +154,14 @@ class PlayingService: Service(), VocalizerListener {
         val t = lastTask
         when (t) {
             is PoemTask -> {
-                sendBroadcast(Intent(BRODCAST_ACTION)
+                sendStatusBrodcast(Intent(BRODCAST_ACTION)
                         .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_ERROR)
                         .putExtra(EXTRA_POEM, t.poem)
                         .putExtra(EXTRA_WRITER, t.writer)
                 )
             }
             is CelebrationTask -> {
-                sendBroadcast(Intent(BRODCAST_ACTION)
+                sendStatusBrodcast(Intent(BRODCAST_ACTION)
                         .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_ERROR)
                         .putExtra(EXTRA_CELEBRATION, t.celebration)
                         .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
@@ -174,7 +169,7 @@ class PlayingService: Service(), VocalizerListener {
                 )
             }
             is GreetingTask -> {
-                sendBroadcast(Intent(BRODCAST_ACTION)
+                sendStatusBrodcast(Intent(BRODCAST_ACTION)
                         .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_ERROR)
                         .putExtra(EXTRA_ROBOT_NAME, t.name)
                         .putExtra(EXTRA_ROBOT_GREETING, t.greeting)
@@ -211,6 +206,10 @@ class PlayingService: Service(), VocalizerListener {
         lastAction = null
     }
 
+
+    private fun sendStatusBrodcast(intent: Intent) =
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+
     private fun onGetAction(intent: Intent?) {
         if (intent?.action != null)
             Log.v(javaClass.simpleName, intent.action)
@@ -223,14 +222,14 @@ class PlayingService: Service(), VocalizerListener {
                 stopBackgroundPlaying()
                 when (t) {
                     is PoemTask -> {
-                        sendBroadcast(Intent(BRODCAST_ACTION)
+                        sendStatusBrodcast(Intent(BRODCAST_ACTION)
                                 .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
                                 .putExtra(EXTRA_POEM, t.poem)
                                 .putExtra(EXTRA_WRITER, t.writer)
                         )
                     }
                     is CelebrationTask -> {
-                        sendBroadcast(Intent(BRODCAST_ACTION)
+                        sendStatusBrodcast(Intent(BRODCAST_ACTION)
                                 .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
                                 .putExtra(EXTRA_CELEBRATION, t.celebration)
                                 .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
@@ -238,7 +237,7 @@ class PlayingService: Service(), VocalizerListener {
                         )
                     }
                     is GreetingTask -> {
-                        sendBroadcast(Intent(BRODCAST_ACTION)
+                        sendStatusBrodcast(Intent(BRODCAST_ACTION)
                                 .putExtra(EXTRA_STATUS, BROADCAST_PLAYING_END)
                                 .putExtra(EXTRA_ROBOT_NAME, t.name)
                                 .putExtra(EXTRA_ROBOT_GREETING, t.greeting)
@@ -250,14 +249,14 @@ class PlayingService: Service(), VocalizerListener {
                 if (lastAction != null) {
                     when (t) {
                         is PoemTask -> {
-                            sendBroadcast(Intent(BRODCAST_ACTION)
+                            sendStatusBrodcast(Intent(BRODCAST_ACTION)
                                     .putExtra(EXTRA_STATUS, lastAction)
                                     .putExtra(EXTRA_POEM, t.poem)
                                     .putExtra(EXTRA_WRITER, t.writer)
                             )
                         }
                         is CelebrationTask -> {
-                            sendBroadcast(Intent(BRODCAST_ACTION)
+                            sendStatusBrodcast(Intent(BRODCAST_ACTION)
                                     .putExtra(EXTRA_STATUS, lastAction)
                                     .putExtra(EXTRA_CELEBRATION, t.celebration)
                                     .putExtra(EXTRA_CELEBRATION_ITEM, t.celebrationItem)
@@ -265,7 +264,7 @@ class PlayingService: Service(), VocalizerListener {
                             )
                         }
                         is GreetingTask -> {
-                            sendBroadcast(Intent(BRODCAST_ACTION)
+                            sendStatusBrodcast(Intent(BRODCAST_ACTION)
                                     .putExtra(EXTRA_STATUS, lastAction)
                                     .putExtra(EXTRA_ROBOT_NAME, t.name)
                                     .putExtra(EXTRA_ROBOT_GREETING, t.greeting)

@@ -3,6 +3,7 @@ package com.punksta.apps.robopoetry.screens.writer
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -124,7 +125,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
 
     override fun onResume() {
         super.onResume()
-        registerReceiver(brodcast, IntentFilter(PlayingBroadcastReceiver.BRODCAST_ACTION))
+        LocalBroadcastManager.getInstance(this).registerReceiver(brodcast, IntentFilter(PlayingBroadcastReceiver.BRODCAST_ACTION));
 
         callback = brodcast.observe()
                 .subscribe { event ->
@@ -186,7 +187,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
 
     override fun onStop() {
         super.onStop()
-        unregisterReceiver(brodcast)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(brodcast)
         callback?.dispose()
         load?.dispose()
         update?.dispose()

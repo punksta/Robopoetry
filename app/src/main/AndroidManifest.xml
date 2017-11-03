@@ -11,8 +11,8 @@
 
 
     <application
-        android:allowBackup="true"
         android:name=".Application"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -34,10 +34,9 @@
             />
 
         <service
-            android:exported="false"
+            android:name=".screens.common.PlayingService"
             android:enabled="true"
-            android:process=":remote"
-            android:name=".screens.common.PlayingService" />
+            android:exported="false" />
 
         <receiver android:name=".screens.common.PlayingBroadcastReceiver"
             android:enabled="true"
