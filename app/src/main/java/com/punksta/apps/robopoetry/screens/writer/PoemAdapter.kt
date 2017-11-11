@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.punksta.apps.robopoetry.R
-import com.punksta.apps.robopoetry.entity.CelebrationItem
 import com.punksta.apps.robopoetry.entity.EntityItem
 import com.punksta.apps.robopoetry.entity.Poem
 
@@ -26,12 +25,6 @@ class PoemAdapter(val items: MutableList<EntityItem>, val poemListener: (EntityI
                 holder.name.text = item.name
                 holder.year.text = item.year
                 holder.cutTextView.text = item.сutText
-                holder.itemView.setOnClickListener { poemListener(item) }
-            }
-            is CelebrationItem -> {
-                holder.name.text = "Поздравление № $position"
-                holder.year.text = "2017"
-                holder.cutTextView.text = item.celebrationText
                 holder.itemView.setOnClickListener { poemListener(item) }
             }
         }

@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.widget.TextView
 import com.punksta.apps.robopoetry.R
-import com.punksta.apps.robopoetry.entity.*
+import com.punksta.apps.robopoetry.entity.EntityItem
+import com.punksta.apps.robopoetry.entity.Poem
+import com.punksta.apps.robopoetry.entity.WriterInfo
 import com.punksta.apps.robopoetry.ext.textChangesEvents
 import com.punksta.apps.robopoetry.model.Robot
 import com.punksta.apps.robopoetry.model.Voice
@@ -40,9 +42,6 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
     private val writer: WriterInfo?
         get() = intent.getParcelableExtra<WriterInfo>("writer")
 
-    private val celebration: Celebration?
-        get() = intent.getParcelableExtra("celebration")
-
     private val speckers: SpeackersView
         get() = findViewById(R.id.speakers)
 
@@ -60,15 +59,6 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                         .putExtra(EXTRA_VOICE, voice)
                         .putExtra(EXTRA_WRITER, writer)
                         .putExtra(EXTRA_POEM, getModel().getPoem(writer!!.id, p1.id).blockingGet())
-                )
-            }
-            is CelebrationItem -> {
-                startService(Intent(this, PlayingService::class.java)
-                        .setAction(ACTION_PLAY)
-                        .putExtra(EXTRA_VOICE, voice)
-                        .putExtra(EXTRA_CELEBRATION, celebration)
-                        .putExtra(EXTRA_CELEBRATION_ITEM, p1)
-                        .putExtra(EXTRA_USER_NAME, (findViewById<TextView>(R.id.filter_by_name)).text.toString())
                 )
             }
         }
@@ -147,7 +137,6 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         )
 
         val w = writer
-        val c = celebration
         when {
             w != null -> {
                 (findViewById<TextView>(R.id.filter_by_name)).setHint(R.string.search)
@@ -168,16 +157,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                             ((findViewById<RecyclerView>(R.id.poems_items)).adapter as PoemAdapter).update(list)
                         }
             }
-            c != null -> {
-                (findViewById<TextView>(R.id.filter_by_name)).setHint(R.string.name)
 
-                getModel().getCelebration(c)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { list ->
-                            (findViewById<RecyclerView>(R.id.poems_items)).adapter = PoemAdapter(list.toMutableList(), this)
-                        }
-            }
             else -> {
                 finish()
             }
@@ -197,11 +177,6 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         fun getIntent(activity: AppCompatActivity, writerInfo: WriterInfo): Intent {
             return Intent(activity, WriterActivity::class.java)
                     .putExtra("writer", writerInfo)
-        }
-
-        fun getIntent(activity: AppCompatActivity, celebration: Celebration): Intent {
-            return Intent(activity, WriterActivity::class.java)
-                    .putExtra("celebration", celebration)
         }
     }
 }

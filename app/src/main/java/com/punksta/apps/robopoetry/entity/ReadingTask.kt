@@ -19,13 +19,3 @@ class PoemReadingTask(yandexVoice: String,
         @JvmField val CREATOR = PaperParcelPoemReadingTask.CREATOR
     }
 }
-
-@PaperParcel
-class CelebrationReadingTask(yandexVoice: String,
-                             val userName: String,
-                             val congratulation: Celebration,
-                             val celebrationItem: CelebrationItem) : ReadingTask(yandexVoice), PaperParcelable {
-    companion object {
-        @JvmField val CREATOR = PaperParcelCelebrationReadingTask.CREATOR
-    }
-}
