@@ -7,6 +7,7 @@ import android.os.IBinder
 import android.os.Parcelable
 import com.punksta.apps.robopoetry.service.entities.SpeechEvent
 import com.punksta.apps.robopoetry.service.entities.YandexVoice
+import com.punksta.apps.robopoetry.service.util.ClosableOnSpeechListener
 import com.punksta.apps.robopoetry.service.util.OnSpeechListener
 import com.punksta.apps.robopoetry.service.util.TaskEventListener
 import ru.yandex.speechkit.SpeechKit
@@ -134,7 +135,7 @@ abstract class BaseYandexSpeechService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        listeners.clear()
+        listeners.forEach { removeListener(it) }
     }
 
 
@@ -158,6 +159,13 @@ abstract class BaseYandexSpeechService : Service() {
 
     fun removeListener(listener: OnSpeechListener) {
         listeners.remove(listener)
+        if (listener is ClosableOnSpeechListener) {
+            try {
+                listener.release()
+            } catch (e: Throwable) {
+
+            }
+        }
     }
 
     companion object {

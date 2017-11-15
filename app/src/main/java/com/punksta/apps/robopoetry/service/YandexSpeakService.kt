@@ -6,6 +6,7 @@ import com.punksta.apps.robopoetry.model.TaskTextProvider
 import com.punksta.apps.robopoetry.model.getTaskTextProvider
 import com.punksta.apps.robopoetry.service.entities.SpeechEvent
 import com.punksta.apps.robopoetry.service.util.OnSpeechListener
+import com.punksta.apps.robopoetry.service.util.PlayerListener
 
 /**
  * Created by stanislav on 11/12/17.
@@ -35,5 +36,6 @@ class YandexSpeakService : BaseYandexSpeechService() {
         }
 
 
+        addListener(PlayerListener(this, "music/sound1.mp3"), true)
     }
 }
