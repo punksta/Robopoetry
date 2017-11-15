@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_margin="4dp"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/speaker_image"
         android:layout_width="70dp"
-        android:src="@drawable/face1"
-        android:layout_height="70dp" />
+        android:layout_height="70dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/face1" />
 
     <TextView
-        android:text="@string/face2"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/threadColor"
         android:id="@+id/speaker_name"
-        android:fontFamily="@font/clacon_normal"
-        android:textSize="16sp"
-        android:lines="2"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/clacon_normal"
+        android:gravity="center"
+        android:lines="2"
+        android:text="@string/face2"
+        android:textAlignment="center"
+        android:textColor="@color/threadColor"
+        android:textSize="16sp" />
 </LinearLayout>

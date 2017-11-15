@@ -3,7 +3,6 @@ package com.punksta.apps.robopoetry.screens.common
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.HorizontalScrollView
 import android.widget.ImageView
@@ -21,16 +20,23 @@ import com.squareup.picasso.Picasso
  */
 
 class SpeackersView : HorizontalScrollView {
-    var listener : (Robot) -> Unit = {}
+    var listener: (Robot) -> Unit = {}
     private val map = mutableMapOf<Robot, ImageView>()
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+    constructor(context: Context?) :
+            super(context)
+
+    constructor(context: Context?, attrs: AttributeSet?) :
+            super(context, attrs)
+
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr)
+
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) :
+            super(context, attrs, defStyleAttr, defStyleRes)
 
 
-    private var animation:YoYo.YoYoString? = null;
+    private var animation: YoYo.YoYoString? = null;
 
     init {
         val linearLayout = LinearLayout(context)
@@ -66,20 +72,37 @@ class SpeackersView : HorizontalScrollView {
 
         setActive(active)
     }
+
+
+    private var currentRobot: Robot? = null;
+
+
     fun setActive(robot: Robot) {
-        clearSpeacking();
-        map[robot]?.alpha = 1f
-        map.filterKeys { it != robot }.forEach { it.value.alpha = 0.5f }
+        if (currentRobot != robot) {
+            map[robot]?.alpha = 1f
+            map.filterKeys { it != robot }.forEach { it.value.alpha = 0.5f }
+            currentRobot = currentRobot;
+        }
     }
 
-    fun setSpeacking(robot: Robot) {
-        animation?.stop()
+    private var speachingRobot: Robot? = null;
 
-        animation =  YoYo.with(Techniques.Pulse)
-                .duration(800)
-                .repeat(1000)
-                .delay(0)
-                .playOn(map[robot]!!.parent as View)
+    fun setSpeacking(robot: Robot) {
+
+        if (speachingRobot != robot) {
+
+            animation?.stop()
+
+            animation = YoYo.with(Techniques.Pulse)
+                    .duration(800)
+                    .repeat(1000)
+                    .delay(0)
+                    .onEnd { speachingRobot = null; }
+                    .onCancel { speachingRobot = null; }
+                    .playOn(map[robot])
+
+            speachingRobot = robot
+        }
     }
 
     fun clearSpeacking() {
