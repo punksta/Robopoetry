@@ -8,6 +8,7 @@ def baseVersionCode = 10
 android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
+
     defaultConfig {
         applicationId "com.punksta.apps.robopoetry"
         minSdkVersion 17
@@ -16,7 +17,11 @@ android {
         versionName "1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
+        buildConfigField 'String', 'yandexApiKey', "\"37064543-1d5c-4a88-80f6-d84ed607d874\""
+
     }
+
     lintOptions {
         disable 'MissingTranslation'
     }
@@ -86,9 +91,6 @@ dependencies {
     implementation 'com.yandex.android:speechkit:2.5.0'
     //    compile 'com.ibm.icu:icu4j:55.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
-        transitive = true
-    }
     implementation 'nz.bradcampbell:paperparcel:2.0.4'
     implementation 'nz.bradcampbell:paperparcel-kotlin:2.0.4'
 
@@ -98,4 +100,7 @@ dependencies {
     // Optional
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.4'
     implementation 'com.android.support:multidex:1.0.2'
+
+    implementation 'org.funktionale:funktionale:0.8'
+
 }

@@ -1,4 +1,4 @@
-package com.punksta.apps.robopoetry.screens.common
+package com.punksta.apps.robopoetry.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -57,9 +57,11 @@ class SpeackersView : HorizontalScrollView {
                         val image = (findViewById<ImageView>(R.id.speaker_image))
 
                         requestManager.load(l.drawableId)
-                                .fit()
                                 .centerInside()
+                                .fit()
                                 .into(image)
+
+//                        image.setImageResource(l.drawableId)
 
                         map[l] = image
                         setOnClickListener {
@@ -78,11 +80,9 @@ class SpeackersView : HorizontalScrollView {
 
 
     fun setActive(robot: Robot) {
-        if (currentRobot != robot) {
-            map[robot]?.alpha = 1f
-            map.filterKeys { it != robot }.forEach { it.value.alpha = 0.5f }
-            currentRobot = currentRobot;
-        }
+        map[robot]?.alpha = 1f
+        map.filterKeys { it != robot }.forEach { it.value.alpha = 0.5f }
+        currentRobot = robot
     }
 
     private var speachingRobot: Robot? = null;
@@ -97,8 +97,6 @@ class SpeackersView : HorizontalScrollView {
                     .duration(800)
                     .repeat(1000)
                     .delay(0)
-                    .onEnd { speachingRobot = null; }
-                    .onCancel { speachingRobot = null; }
                     .playOn(map[robot])
 
             speachingRobot = robot
@@ -107,5 +105,7 @@ class SpeackersView : HorizontalScrollView {
 
     fun clearSpeacking() {
         animation?.stop()
+        speachingRobot?.let { map[it] }?.clearAnimation()
+        speachingRobot = null
     }
 }

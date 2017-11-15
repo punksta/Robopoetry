@@ -1,28 +1,34 @@
 package com.punksta.apps.robopoetry.screens.writer
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
+import android.content.ServiceConnection
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
+import android.os.IBinder
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.widget.TextView
 import com.punksta.apps.robopoetry.R
-import com.punksta.apps.robopoetry.entity.EntityItem
-import com.punksta.apps.robopoetry.entity.Poem
-import com.punksta.apps.robopoetry.entity.WriterInfo
+import com.punksta.apps.robopoetry.entity.*
 import com.punksta.apps.robopoetry.ext.textChangesEvents
 import com.punksta.apps.robopoetry.model.Robot
-import com.punksta.apps.robopoetry.model.Voice
 import com.punksta.apps.robopoetry.model.getModel
-import com.punksta.apps.robopoetry.screens.common.*
+import com.punksta.apps.robopoetry.model.toRobotEnum
+import com.punksta.apps.robopoetry.service.BaseYandexSpeechService
+import com.punksta.apps.robopoetry.service.YandexSpeakService
+import com.punksta.apps.robopoetry.service.entities.SpeechEvent
+import com.punksta.apps.robopoetry.service.util.OnSpeechListener
+import com.punksta.apps.robopoetry.view.SpeackersView
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import ru.yandex.speechkit.Vocalizer
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.Subject
 
 
 /**
@@ -33,33 +39,30 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
     private var load: Disposable? = null
     private var update: Disposable? = null
     private var callback: Disposable? = null
+    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    private val brodcast = PlayingBroadcastReceiver()
 
     private val button: Button
         get() = findViewById(R.id.stop_button)
 
     private val writer: WriterInfo?
-        get() = intent.getParcelableExtra<WriterInfo>("writer")
+        get() = intent.getParcelableExtra("writer")
 
     private val speckers: SpeackersView
         get() = findViewById(R.id.speakers)
 
 
-    fun getCurrentVoice() : String{
-        return (getModel().getCurrent().voice as? Voice.YandexVoice?)?.voice?:Vocalizer.Voice.ALYSS
-    }
-
     override fun invoke(p1: EntityItem) {
-        val voice : String = getCurrentVoice()
         when (p1) {
             is Poem -> {
-                startService(Intent(this, PlayingService::class.java)
-                        .setAction(ACTION_PLAY)
-                        .putExtra(EXTRA_VOICE, voice)
-                        .putExtra(EXTRA_WRITER, writer)
-                        .putExtra(EXTRA_POEM, getModel().getPoem(writer!!.id, p1.id).blockingGet())
+                val task = PoemSpeechTask(
+                        writer!!.id,
+                        p1.id,
+                        getModel().getCurrent().voice,
+                        "${writer!!.name} - ${p1.name}"
                 )
+
+                bindler?.playTask(task)
             }
         }
     }
@@ -79,64 +82,105 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
 
         overridePendingTransition(R.anim.left_in, R.anim.left_out);
 
-
-
         (findViewById<RecyclerView>(R.id.poems_items)).layoutManager = LinearLayoutManager(this)
 
         val s = speckers
 
         s.listener = {
             getModel().setCurrent(it)
-            s.setActive(it)
-            notifyRobotChange(it);
+            notifyRobotChange(it)
         }
 
-        s.showRobots(getModel().getRobots(), getModel().getCurrent(), Picasso.with(this))
-        loaded = false
+        if (savedInstanceState == null) {
+            s.showRobots(getModel().getRobots(), getModel().getCurrent(), Picasso.with(this))
+            loaded = false
+        }
 
         button.setOnClickListener {
-            startService(Intent(this, PlayingService::class.java)
-                    .setAction(ACTION_STOP)
-            )
+            bindler?.stopLastTask()
         }
     }
 
-    private fun notifyRobotChange (robot: Robot) {
+    private fun notifyRobotChange(robot: Robot) {
         speckers.clearSpeacking()
 
-        startService(Intent(this, PlayingService::class.java)
-                .setAction(ACTION_PLAY)
-                .putExtra(EXTRA_VOICE, getCurrentVoice())
-                .putExtra(EXTRA_ROBOT_GREETING, getModel().getGreetingForRobot(robot))
-                .putExtra(EXTRA_ROBOT_NAME, getString(robot.nameId))
-        )
+        val greeting = getModel().getGreetingForRobot(robot);
+
+
+        bindler?.playTask(GreetingsSpeechTask(greeting, robot.voice, getString(robot.nameId)))
+//        startService(Intent(this, PlayingService::class.java)
+//                .setAction(ACTION_PLAY)
+//                .putExtra(EXTRA_VOICE, getCurrentVoice())
+//                .putExtra(EXTRA_ROBOT_GREETING, getModel().getGreetingForRobot(robot))
+//                .putExtra(EXTRA_ROBOT_NAME, getString(robot.nameId))
+//        )
+    }
+
+
+    private var bindler: BaseYandexSpeechService.YandexSpeechBinder? = null
+    private val eventsSubject: Subject<SpeechEvent> = BehaviorSubject.create()
+
+    private val listener = object : OnSpeechListener {
+        override fun onEvent(speechEvent: SpeechEvent) {
+            eventsSubject.onNext(speechEvent)
+        }
+    }
+
+
+    private val serverConnection = object : ServiceConnection {
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            this@WriterActivity.bindler?.removeListener(listener)
+            this@WriterActivity.bindler = null
+        }
+
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            service?.let {
+                (service as? BaseYandexSpeechService.YandexSpeechBinder)?.let {
+                    this@WriterActivity.bindler = it
+                    it.addListener(listener, true)
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        bindService(Intent(this, YandexSpeakService::class.java), serverConnection, Context.BIND_AUTO_CREATE)
     }
 
 
     override fun onResume() {
         super.onResume()
-        LocalBroadcastManager.getInstance(this).registerReceiver(brodcast, IntentFilter(PlayingBroadcastReceiver.BRODCAST_ACTION));
 
-        callback = brodcast.observe()
-                .subscribe { event ->
-                    when (event) {
-                        is Event.PlayingStartted -> {
-                            button.isEnabled = true
-                            speckers.setSpeacking(getModel().getCurrent())
-                        }
-                        else -> {
-                            button.isEnabled = false
+        val w = writer
+
+        eventsSubject
+                .distinctUntilChanged()
+                .subscribe {
+                    when (it) {
+                        is SpeechEvent.OnProcessingStart -> {
                             speckers.clearSpeacking()
+                            button.isEnabled = true
+                        }
+
+                        is SpeechEvent.OnSpeechStart -> {
+                            val robot = it.task.voice.toRobotEnum().robot
+                            speckers.setActive(robot)
+                            speckers.setSpeacking(robot)
+                        }
+
+                        else -> {
+                            speckers.clearSpeacking()
+                            button.isEnabled = false
                         }
                     }
                 }
+                .also {
+                    compositeDisposable.add(it)
+                }
 
 
-        startService(Intent(this, PlayingService::class.java)
-                .setAction(ACTION_REGISTER)
-        )
-
-        val w = writer
         when {
             w != null -> {
                 (findViewById<TextView>(R.id.filter_by_name)).setHint(R.string.search)
@@ -148,6 +192,9 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                             .subscribe { list ->
                                 (findViewById<RecyclerView>(R.id.poems_items)).adapter = PoemAdapter(list.toMutableList(), this)
                             }
+                            .also {
+                                compositeDisposable.add(it)
+                            }
                 }
                 update = (findViewById<TextView>(R.id.filter_by_name)).textChangesEvents(false)
                         .flatMap { getModel().queryPoems(writerId = w.id, query = it, cutLimit = 40).toObservable() }
@@ -155,6 +202,9 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { list ->
                             ((findViewById<RecyclerView>(R.id.poems_items)).adapter as PoemAdapter).update(list)
+                        }
+                        .also {
+                            compositeDisposable.add(it)
                         }
             }
 
@@ -167,10 +217,17 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
 
     override fun onStop() {
         super.onStop()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(brodcast)
+
+        unbindService(serverConnection)
+        bindler?.removeListener(listener)
+
         callback?.dispose()
         load?.dispose()
         update?.dispose()
+
+        speckers.clearSpeacking()
+        button.isEnabled = false
+
     }
 
     companion object {

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
-import com.crashlytics.android.Crashlytics
 import com.fasterxml.jackson.core.JsonFactory
 import com.opencsv.CSVReader
 import com.punksta.apps.robopoetry.entity.Order
@@ -56,7 +55,6 @@ class DataModelImp(context: Context) : DataModel {
             query == null -> null
             getKeyboardLocale()?.displayLanguage?.toLowerCase() == "русский" -> query
             else -> {
-                Crashlytics.log(0, "transform", query)
                 translate.latToCyr(query)
             }
         }

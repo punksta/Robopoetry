@@ -20,3 +20,4 @@ object Provider {
 
 
 fun Context.getModel() = Provider.getModel(this)
+fun Context.getTaskTextProvider() = TaskTextProviderImpl

@@ -104,7 +104,6 @@ fun String.cutString(begin: Int, end: Int): String {
         this
     else
         substring(begin, end)
-
 }
 
 

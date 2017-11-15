@@ -18,7 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
         <activity android:name=".screens.writerLists.MainActivity"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden"
             >
@@ -34,21 +33,8 @@
             />
 
         <service
-            android:name=".screens.common.PlayingService"
-            android:enabled="true"
+            android:name=".service.YandexSpeakService"
             android:exported="false" />
-
-        <receiver android:name=".screens.common.PlayingBroadcastReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.punksta.apps.robopoetry.brodcast.message" />
-            </intent-filter>
-        </receiver>
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="25a3f9f622bd7c124bdbb314a05be2726b029bc6" />
 
     </application>
 

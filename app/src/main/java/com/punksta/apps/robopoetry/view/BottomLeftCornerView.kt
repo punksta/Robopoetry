@@ -1,4 +1,4 @@
-package com.punksta.apps.robopoetry
+package com.punksta.apps.robopoetry.view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.ext.pxFromDp
 
 
