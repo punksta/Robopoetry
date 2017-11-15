@@ -11,15 +11,12 @@ import android.text.method.LinkMovementMethod
 import android.view.View
 import android.view.View.TEXT_ALIGNMENT_CENTER
 import android.widget.TextView
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.beta.Beta
 import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.entity.Entity
 import com.punksta.apps.robopoetry.entity.WriterInfo
 import com.punksta.apps.robopoetry.ext.textChangesEvents
 import com.punksta.apps.robopoetry.model.getModel
 import com.punksta.apps.robopoetry.screens.writer.WriterActivity
-import io.fabric.sdk.android.Fabric
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
@@ -69,7 +66,6 @@ class MainActivity : AppCompatActivity(), (Entity) -> Unit {
             adapter = WriterAdapter(ArrayList(), this@MainActivity)
         }
 
-        Fabric.with(this, Crashlytics(), Beta())
         findViewById<View>(R.id.info_button).setOnClickListener {
             showSourceDialog()
         }

@@ -1,7 +1,5 @@
 package com.punksta.apps.robopoetry.model
 
-import io.fabric.sdk.android.Fabric
-
 /**
  * Created by stanislav on 1/10/17.
  */
