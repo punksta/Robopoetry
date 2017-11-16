@@ -52,7 +52,6 @@ class SpeackersView : HorizontalScrollView {
         list.map { l ->
             LayoutInflater.from(context).inflate(R.layout.item_speaker, linearLayout, false)
                     .apply {
-                        (findViewById<TextView>(R.id.speaker_name))
                         (findViewById<TextView>(R.id.speaker_name) as TextView).text = context.getString(l.nameId)
                         val image = (findViewById<ImageView>(R.id.speaker_image))
 
@@ -80,8 +79,9 @@ class SpeackersView : HorizontalScrollView {
 
 
     fun setActive(robot: Robot) {
-        map[robot]?.alpha = 1f
-        map.filterKeys { it != robot }.forEach { it.value.alpha = 0.5f }
+        val robotView = map[robot]
+        robotView?.post { robotView.alpha = 1f; robotView.invalidate() }
+        map.filterKeys { it != robot }.forEach { it.value.post { it.value.alpha = 0.5f; it.value.invalidate() } }
         currentRobot = robot
     }
 
