@@ -9,14 +9,14 @@ import ru.yandex.speechkit.VocalizerListener
 
 
 class TaskEventListener(private val task: SpeechTask,
-                        private val eventSender: (SpeechEvent) -> Unit) :
+                        private val eventSender: (SpeechEvent<*>) -> Unit) :
         VocalizerListener {
 
-    private var lastEvent: SpeechEvent? = null
+    private var lastEvent: SpeechEvent<*>? = null
 
     private val unit = Unit
 
-    private val eventProxy: (SpeechEvent) -> Unit = { event ->
+    private val eventProxy: (SpeechEvent<*>) -> Unit = { event ->
         synchronized(unit, {
             if (lastEvent != event) {
                 eventSender(event)

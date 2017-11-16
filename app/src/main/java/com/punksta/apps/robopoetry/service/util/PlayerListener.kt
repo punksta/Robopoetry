@@ -21,7 +21,7 @@ class PlayerListener(private val context: Context, private val mp3Path: String) 
     private var player: MediaPlayer? = null
 
 
-    override fun onEvent(speechEvent: SpeechEvent) {
+    override fun onEvent(speechEvent: SpeechEvent<*>) {
         when (speechEvent) {
             is SpeechEvent.OnSpeechStart -> {
                 startPlay()

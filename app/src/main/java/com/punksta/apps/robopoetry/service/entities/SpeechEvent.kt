@@ -5,9 +5,9 @@ import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 import ru.yandex.speechkit.Error
 
-sealed class SpeechEvent(val task: SpeechTask) : PaperParcelable {
+sealed class SpeechEvent<out T : SpeechTask?>(val task: T) : PaperParcelable {
     @PaperParcel
-    class OnProcessingStart(task: SpeechTask) : SpeechEvent(task) {
+    class OnProcessingStart(task: SpeechTask) : SpeechEvent<SpeechTask>(task) {
         companion object {
             @JvmField
             val CREATOR = PaperParcelSpeechEvent_OnProcessingStart.CREATOR
@@ -19,7 +19,7 @@ sealed class SpeechEvent(val task: SpeechTask) : PaperParcelable {
     }
 
     @PaperParcel
-    class OnSpeechStart(task: SpeechTask) : SpeechEvent(task) {
+    class OnSpeechStart(task: SpeechTask) : SpeechEvent<SpeechTask>(task) {
         companion object {
             @JvmField
             val CREATOR = PaperParcelSpeechEvent_OnSpeechStart.CREATOR
@@ -31,7 +31,7 @@ sealed class SpeechEvent(val task: SpeechTask) : PaperParcelable {
     }
 
     @PaperParcel
-    class OnSpeechEnd(task: SpeechTask) : SpeechEvent(task) {
+    class OnSpeechEnd(task: SpeechTask) : SpeechEvent<SpeechTask>(task) {
         companion object {
             @JvmField
             val CREATOR = PaperParcelSpeechEvent_OnSpeechEnd.CREATOR
@@ -43,7 +43,7 @@ sealed class SpeechEvent(val task: SpeechTask) : PaperParcelable {
     }
 
     @PaperParcel
-    class OnSpeechError(task: SpeechTask, val error: Error) : SpeechEvent(task) {
+    class OnSpeechError(task: SpeechTask, val error: Error) : SpeechEvent<SpeechTask>(task) {
         companion object {
             @JvmField
             val CREATOR = PaperParcelSpeechEvent_OnSpeechError.CREATOR
@@ -73,7 +73,7 @@ sealed class SpeechEvent(val task: SpeechTask) : PaperParcelable {
     }
 
     @PaperParcel
-    class OnSpeechStopped(task: SpeechTask) : SpeechEvent(task) {
+    class OnSpeechStopped(task: SpeechTask?) : SpeechEvent<SpeechTask?>(task) {
         companion object {
             @JvmField
             val CREATOR = PaperParcelSpeechEvent_OnSpeechStopped.CREATOR
@@ -93,7 +93,7 @@ sealed class SpeechEvent(val task: SpeechTask) : PaperParcelable {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as SpeechEvent
+        other as SpeechEvent<*>
 
         if (task != other.task) return false
 
@@ -101,6 +101,8 @@ sealed class SpeechEvent(val task: SpeechTask) : PaperParcelable {
     }
 
     override fun hashCode(): Int {
-        return task.hashCode()
+        return task?.hashCode() ?: 0
     }
+
+
 }

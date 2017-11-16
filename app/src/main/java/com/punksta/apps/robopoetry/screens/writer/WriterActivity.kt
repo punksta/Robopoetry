@@ -118,10 +118,10 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
 
 
     private var bindler: BaseYandexSpeechService.YandexSpeechBinder? = null
-    private val eventsSubject: Subject<SpeechEvent> = BehaviorSubject.create()
+    private val eventsSubject: Subject<SpeechEvent<*>> = BehaviorSubject.create()
 
     private val listener = object : OnSpeechListener {
-        override fun onEvent(speechEvent: SpeechEvent) {
+        override fun onEvent(speechEvent: SpeechEvent<*>) {
             eventsSubject.onNext(speechEvent)
         }
     }

@@ -1,6 +1,7 @@
 package com.punksta.apps.robopoetry.service
 
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Intent
 import android.util.Log
 import com.punksta.apps.robopoetry.BuildConfig
@@ -40,7 +41,7 @@ class YandexSpeakService : BaseYandexSpeechService() {
 
         if (BuildConfig.DEBUG) {
             val loggerListener = object : OnSpeechListener {
-                override fun onEvent(speechEvent: SpeechEvent) {
+                override fun onEvent(speechEvent: SpeechEvent<*>) {
                     Log.v("YandexSpeakService", speechEvent.toString())
                 }
             }
@@ -51,5 +52,10 @@ class YandexSpeakService : BaseYandexSpeechService() {
 
         addListener(PlayerListener(this, "music/sound1.mp3"), true)
         addListener(NotificationSpeechListener(this, pendingIntentFactory), true)
+    }
+
+    override fun startService(service: Intent?): ComponentName {
+        return super.startService(service)
+
     }
 }

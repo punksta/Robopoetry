@@ -2,6 +2,7 @@ package com.punksta.apps.robopoetry.service.util
 
 import android.app.PendingIntent
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import com.punksta.apps.robopoetry.R
@@ -18,7 +19,7 @@ class NotificationSpeechListener(
 ) : ClosableOnSpeechListener {
 
 
-    override fun onEvent(speechEvent: SpeechEvent) {
+    override fun onEvent(speechEvent: SpeechEvent<*>) {
         when (speechEvent) {
             is SpeechEvent.OnSpeechStart -> {
                 showNotification(speechEvent.task)
@@ -41,11 +42,14 @@ class NotificationSpeechListener(
     private val manager = NotificationManagerCompat.from(context)
     private val stopIntent = stopPendingIntent()
 
+    private val icon = BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher)
+
     private fun showNotification(speechTask: SpeechTask) {
         val notification = NotificationCompat.Builder(context, "speech_notification")
                 .setContentText(speechTask.title)
                 .setContentTitle("Now playing")
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(icon)
                 .setOnlyAlertOnce(true)
                 .setOngoing(true)
                 .addAction(
