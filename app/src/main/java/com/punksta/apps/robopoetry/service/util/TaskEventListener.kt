@@ -7,20 +7,34 @@ import ru.yandex.speechkit.Synthesis
 import ru.yandex.speechkit.Vocalizer
 import ru.yandex.speechkit.VocalizerListener
 
+
 class TaskEventListener(private val task: SpeechTask,
                         private val eventSender: (SpeechEvent) -> Unit) :
         VocalizerListener {
 
+    private var lastEvent: SpeechEvent? = null
+
+    private val unit = Unit
+
+    private val eventProxy: (SpeechEvent) -> Unit = { event ->
+        synchronized(unit, {
+            if (lastEvent != event) {
+                eventSender(event)
+                lastEvent = event
+            }
+        })
+    }
+
     override fun onSynthesisBegin(p0: Vocalizer?) {
-        eventSender(SpeechEvent.OnProcessingStart(task))
+        eventProxy(SpeechEvent.OnProcessingStart(task))
     }
 
     override fun onPlayingBegin(p0: Vocalizer?) {
-        eventSender(SpeechEvent.OnSpeechStart(task))
+        eventProxy(SpeechEvent.OnSpeechStart(task))
     }
 
     override fun onVocalizerError(p0: Vocalizer?, p1: Error) {
-        eventSender(SpeechEvent.OnSpeechError(task, p1))
+        eventProxy(SpeechEvent.OnSpeechError(task, p1))
     }
 
     override fun onSynthesisDone(p0: Vocalizer?, p1: Synthesis?) {
@@ -28,7 +42,7 @@ class TaskEventListener(private val task: SpeechTask,
     }
 
     override fun onPlayingDone(p0: Vocalizer?) {
-        eventSender(SpeechEvent.OnSpeechEnd(task))
+        eventProxy(SpeechEvent.OnSpeechEnd(task))
     }
 
 }
