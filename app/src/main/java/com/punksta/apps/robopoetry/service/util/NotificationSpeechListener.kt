@@ -14,7 +14,7 @@ import java.util.*
  */
 class NotificationSpeechListener(
         private val context: Context,
-        private val stopPendingIntent: (SpeechTask) -> PendingIntent
+        private val stopPendingIntent: () -> PendingIntent
 ) : ClosableOnSpeechListener {
 
 
@@ -38,13 +38,13 @@ class NotificationSpeechListener(
 
     private val id: Int = Random(System.currentTimeMillis()).nextInt()
 
-    private val builder = NotificationCompat.Builder(context, "speech_notification")
     private val manager = NotificationManagerCompat.from(context)
+    private val stopIntent = stopPendingIntent()
 
     private fun showNotification(speechTask: SpeechTask) {
-        val notification = builder
+        val notification = NotificationCompat.Builder(context, "speech_notification")
                 .setContentText(speechTask.title)
-                .setContentText("Current play")
+                .setContentTitle("Now playing")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setOnlyAlertOnce(true)
                 .setOngoing(true)
@@ -52,7 +52,7 @@ class NotificationSpeechListener(
                         NotificationCompat.Action.Builder(
                                 R.drawable.ic_stop_black_24dp,
                                 "stop",
-                                stopPendingIntent(speechTask)
+                                stopIntent
                         ).build()
 
                 )
