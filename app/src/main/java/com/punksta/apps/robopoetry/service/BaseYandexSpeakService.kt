@@ -72,7 +72,8 @@ abstract class BaseYandexSpeechService : Service() {
 
 
     private fun notifyListeners(event: SpeechEvent<*>) {
-        listeners.forEach { it.onEvent(event) }
+        val copy = listeners.toList()
+        copy.forEach { it.onEvent(event) }
     }
 
     private fun onNewEvent(event: SpeechEvent<*>) {
@@ -131,13 +132,19 @@ abstract class BaseYandexSpeechService : Service() {
             if (e != null) {
                 listener.onEvent(e)
             }
-        }
+            }
     }
 
+    private val block = Unit
+
+    private fun removeListeners() {
+        val copy = listeners.toList()
+        copy.forEach { removeListener(it) }
+    }
 
     override fun onDestroy() {
         NotificationManagerCompat.from(this).cancelAll()
-        listeners.forEach { removeListener(it) }
+        removeListeners();
         super.onDestroy()
     }
 
@@ -147,6 +154,11 @@ abstract class BaseYandexSpeechService : Service() {
             STOP_TASK -> {
                 stopLastTask()
                 START_STICKY
+            }
+            STOP_SELF -> {
+                stopLastTask()
+                stopSelf()
+                START_NOT_STICKY
             }
             PLAY_TASK -> {
                 val task = intent.getParcelableExtra<SpeechTask>(PLAY_TASK)
@@ -160,7 +172,9 @@ abstract class BaseYandexSpeechService : Service() {
     }
 
     fun removeListener(listener: OnSpeechListener) {
-        listeners.remove(listener)
+        synchronized(block) {
+            listeners.remove(listener)
+        }
         if (listener is ClosableOnSpeechListener) {
             try {
                 listener.release()
@@ -171,7 +185,6 @@ abstract class BaseYandexSpeechService : Service() {
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-        listeners.clear()
         super.onTaskRemoved(rootIntent)
     }
 
@@ -179,12 +192,17 @@ abstract class BaseYandexSpeechService : Service() {
         private val TASK_KEY = "task"
         private val PLAY_TASK = "play_task"
         private val STOP_TASK = "stop_task"
-
+        private val STOP_SELF = "stop_self"
 
         fun Intent.putTask(task: SpeechTask) =
                 apply {
                     action = PLAY_TASK
                     putExtra(TASK_KEY, task)
+                }
+
+        fun Intent.putStopSelf() =
+                apply {
+                    action = STOP_SELF
                 }
 
         fun Intent.putStopSpeach() =

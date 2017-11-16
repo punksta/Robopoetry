@@ -8,7 +8,6 @@ import android.support.v4.app.NotificationManagerCompat
 import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.service.SpeechTask
 import com.punksta.apps.robopoetry.service.entities.SpeechEvent
-import java.util.*
 
 /**
  * Created by stanislav on 11/16/17.
@@ -37,7 +36,7 @@ class NotificationSpeechListener(
         hideNotification()
     }
 
-    private val id: Int = Random(System.currentTimeMillis()).nextInt()
+    private val id: Int = 9999
 
     private val manager = NotificationManagerCompat.from(context)
     private val stopIntent = stopPendingIntent()

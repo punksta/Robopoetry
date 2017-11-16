@@ -25,7 +25,7 @@ class YandexSpeakService : BaseYandexSpeechService() {
     }
 
     private val pendingIntentFactory: () -> PendingIntent = {
-        val intent = Intent(this, YandexSpeakService::class.java).putStopSpeach()
+        val intent = Intent(this, YandexSpeakService::class.java).putStopSelf()
         PendingIntent.getService(
                 this.applicationContext,
                 0,
