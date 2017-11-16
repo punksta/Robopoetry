@@ -36,7 +36,7 @@ class SpeackersView : HorizontalScrollView {
             super(context, attrs, defStyleAttr, defStyleRes)
 
 
-    private var animation: YoYo.YoYoString? = null;
+    private var animation: YoYo.YoYoString? = null
 
     init {
         val linearLayout = LinearLayout(context)
@@ -75,7 +75,7 @@ class SpeackersView : HorizontalScrollView {
     }
 
 
-    private var currentRobot: Robot? = null;
+    private var currentRobot: Robot? = null
 
 
     fun setActive(robot: Robot) {
@@ -85,7 +85,7 @@ class SpeackersView : HorizontalScrollView {
         currentRobot = robot
     }
 
-    private var speachingRobot: Robot? = null;
+    private var speachingRobot: Robot? = null
 
     fun setSpeacking(robot: Robot) {
 

@@ -63,8 +63,8 @@ object GreetingProvider {
         return if (cache.containsKey(id))
             cache[id]!!
         else {
-            val list = context.resources.getStringArray(id).toMutableList();
-            java.util.Collections.shuffle(list, random);
+            val list = context.resources.getStringArray(id).toMutableList()
+            java.util.Collections.shuffle(list, random)
             return list to 0
         }
     }

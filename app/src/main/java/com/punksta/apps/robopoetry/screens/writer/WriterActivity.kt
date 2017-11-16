@@ -72,7 +72,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        overridePendingTransition(R.anim.right_in, R.anim.right_out);
+        overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +80,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
 
         setContentView(R.layout.activity_writer)
 
-        overridePendingTransition(R.anim.left_in, R.anim.left_out);
+        overridePendingTransition(R.anim.left_in, R.anim.left_out)
 
         (findViewById<RecyclerView>(R.id.poems_items)).layoutManager = LinearLayoutManager(this)
 
@@ -104,7 +104,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
     private fun notifyRobotChange(robot: Robot) {
         speckers.clearSpeacking()
 
-        val greeting = getModel().getGreetingForRobot(robot);
+        val greeting = getModel().getGreetingForRobot(robot)
 
 
         bindler?.playTask(GreetingsSpeechTask(greeting, robot.voice, getString(robot.nameId)))

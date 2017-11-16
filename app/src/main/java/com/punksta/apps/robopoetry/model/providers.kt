@@ -38,6 +38,6 @@ class PoemReadProvider(val context: Context) : TaskTextProviderT<PoemSpeechTask>
     private val readTextFromDiskMemoized = this::readTextFromDisk.memoize()
 
     override fun provide(t: PoemSpeechTask): String {
-        return t.title + " " + readTextFromDiskMemoized(t.writerId, t.poemId) + ". \n\t";
+        return t.title + " " + readTextFromDiskMemoized(t.writerId, t.poemId) + ". \n\t"
     }
 }

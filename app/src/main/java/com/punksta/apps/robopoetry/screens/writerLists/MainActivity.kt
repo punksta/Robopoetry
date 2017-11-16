@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), (Entity) -> Unit {
         val textView = HtmlTextView(this)
 
         textView.typeface = ResourcesCompat.getFont(this, R.font.clacon_normal)
-        textView.movementMethod = LinkMovementMethod.getInstance();
+        textView.movementMethod = LinkMovementMethod.getInstance()
         textView.autoLinkMask
         textView.setHtml(R.raw.info, HtmlHttpImageGetter(textView))
         textView.textAlignment = TEXT_ALIGNMENT_CENTER

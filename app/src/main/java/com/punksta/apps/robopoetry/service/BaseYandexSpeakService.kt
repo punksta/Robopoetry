@@ -24,7 +24,7 @@ abstract class BaseYandexSpeechService : Service() {
     private val listeners: MutableSet<OnSpeechListener> = HashSet()
     private var lastEvent: SpeechEvent? = null
     private var lastTask: SpeechTask? = null
-    private var lastVocalizer: Vocalizer? = null;
+    private var lastVocalizer: Vocalizer? = null
 
 
     abstract protected fun getTextForTask(task: SpeechTask): String
@@ -34,8 +34,8 @@ abstract class BaseYandexSpeechService : Service() {
         protected inline val service: BaseYandexSpeechService
             get() = this@BaseYandexSpeechService
 
-        public fun playTask(task: SpeechTask) = service.playTask(task)
-        public fun stopLastTask() = service.stopLastTask()
+        fun playTask(task: SpeechTask) = service.playTask(task)
+        fun stopLastTask() = service.stopLastTask()
 
 
         private val lastEvent: SpeechEvent?
@@ -60,7 +60,7 @@ abstract class BaseYandexSpeechService : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder? {
-        return createBinder();
+        return createBinder()
     }
 
 
@@ -75,7 +75,7 @@ abstract class BaseYandexSpeechService : Service() {
     }
 
     private fun onNewEvent(event: SpeechEvent) {
-        lastEvent = event;
+        lastEvent = event
         notifyListeners(event)
     }
 
@@ -126,7 +126,7 @@ abstract class BaseYandexSpeechService : Service() {
     fun addListener(listener: OnSpeechListener, emmitCurrentState: Boolean) {
         listeners.add(listener)
         if (emmitCurrentState) {
-            val e = lastEvent;
+            val e = lastEvent
             if (e != null) {
                 listener.onEvent(e)
             }
@@ -174,13 +174,13 @@ abstract class BaseYandexSpeechService : Service() {
         private val STOP_TASK = "stop_task"
 
 
-        public fun Intent.putTask(task: SpeechTask) =
+        fun Intent.putTask(task: SpeechTask) =
                 apply {
                     action = PLAY_TASK
                     putExtra(TASK_KEY, task)
                 }
 
-        public fun Intent.putStopSpeach() =
+        fun Intent.putStopSpeach() =
                 apply {
                     action = STOP_TASK
                 }

@@ -85,7 +85,7 @@ fun JsonParser.parsePoems(cutSize: Int? = null, query: String? = null, idList: L
             "poems" -> {
                 nextToken()
                 result = parsePoemsInner(emptyList(), cutSize) {
-                    val idResult = idList?.contains(it.id) ?: true
+                    val idResult = idList?.contains(it.id) != false
                     if (idResult) {
                         val qResult = it queryPredicate query
                         qResult

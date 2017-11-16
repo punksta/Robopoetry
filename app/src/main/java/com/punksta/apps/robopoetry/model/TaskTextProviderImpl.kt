@@ -7,7 +7,7 @@ import com.punksta.apps.robopoetry.service.SpeechTask
  */
 
 interface TaskTextProviderT<in T : SpeechTask> {
-    public fun provide(t: T): String
+    fun provide(t: T): String
 }
 
 private data class ClassAndProvider<T : SpeechTask>(val clazz: Class<T>, val provider: TaskTextProviderT<T>)
@@ -23,7 +23,7 @@ object TaskTextProviderImpl : TaskTextProvider {
 
     }
 
-    public fun <T : SpeechTask> registerProvide(clazz: Class<T>, provider: TaskTextProviderT<T>) {
+    fun <T : SpeechTask> registerProvide(clazz: Class<T>, provider: TaskTextProviderT<T>) {
         providers.add(ClassAndProvider(clazz, provider))
     }
 }

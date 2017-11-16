@@ -35,7 +35,7 @@ class WriterAdapter(var items: MutableList<WriterInfo>, val listener: Entity.() 
                 val item = items[position]
                 val res = holder.itemView.context.resources
 
-                holder.count.text = res.getQuantityString(R.plurals.poem_plural, item.poemCount, item.poemCount);
+                holder.count.text = res.getQuantityString(R.plurals.poem_plural, item.poemCount, item.poemCount)
                 holder.name.text = item.name
                 holder.itemView?.setOnClickListener {
                     listener(item)

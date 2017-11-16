@@ -53,8 +53,8 @@ class BottomLeftCornerView @JvmOverloads constructor(
                         0, 0
                 )
 
-                paint.color = a.getColor(R.styleable.BottomLeftCornerView_color, Color.WHITE);
-                paint.strokeWidth = a.getDimension(R.styleable.BottomLeftCornerView_strokeWidth, 1f);
+                paint.color = a.getColor(R.styleable.BottomLeftCornerView_color, Color.WHITE)
+                paint.strokeWidth = a.getDimension(R.styleable.BottomLeftCornerView_strokeWidth, 1f)
 
                 corners = (a.getString(R.styleable.BottomLeftCornerView_data) ?: "")
                         .filter { it != ' ' }

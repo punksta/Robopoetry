@@ -70,7 +70,7 @@ class DataModelImp(context: Context) : DataModel {
                 .use {
                     while (true) {
                         val line: Array<String>? = it.readNext()
-                        if (line?.isEmpty() ?: true) {
+                        if (line?.isEmpty() != false) {
                             break
                         } else {
                             result += WriterInfo(line!![0], line[1], line[2].toInt())
