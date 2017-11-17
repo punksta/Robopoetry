@@ -1,7 +1,6 @@
 package com.punksta.apps.robopoetry.service
 
 import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Intent
 import android.util.Log
 import com.punksta.apps.robopoetry.BuildConfig
@@ -11,6 +10,7 @@ import com.punksta.apps.robopoetry.service.entities.SpeechEvent
 import com.punksta.apps.robopoetry.service.util.NotificationSpeechListener
 import com.punksta.apps.robopoetry.service.util.OnSpeechListener
 import com.punksta.apps.robopoetry.service.util.PlayerListener
+
 
 /**
  * Created by stanislav on 11/12/17.
@@ -24,8 +24,9 @@ class YandexSpeakService : BaseYandexSpeechService() {
         return provider.provide(task)
     }
 
+
     private val pendingIntentFactory: () -> PendingIntent = {
-        val intent = Intent(this, YandexSpeakService::class.java).putStopSelf()
+        val intent = Intent(this, YandexSpeakService::class.java).putStopSpeach()
         PendingIntent.getService(
                 this.applicationContext,
                 0,
@@ -39,6 +40,8 @@ class YandexSpeakService : BaseYandexSpeechService() {
 
         provider = getTaskTextProvider()
 
+        addListener(NotificationSpeechListener(this, pendingIntentFactory), true)
+
         if (BuildConfig.DEBUG) {
             val loggerListener = object : OnSpeechListener {
                 override fun onEvent(speechEvent: SpeechEvent<*>) {
@@ -49,13 +52,6 @@ class YandexSpeakService : BaseYandexSpeechService() {
             addListener(loggerListener, true)
         }
 
-
         addListener(PlayerListener(this, "music/sound1.mp3"), true)
-        addListener(NotificationSpeechListener(this, pendingIntentFactory), true)
-    }
-
-    override fun startService(service: Intent?): ComponentName {
-        return super.startService(service)
-
     }
 }

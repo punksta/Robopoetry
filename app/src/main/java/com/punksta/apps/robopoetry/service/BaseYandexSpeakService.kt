@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.os.Parcelable
-import android.support.v4.app.NotificationManagerCompat
 import com.punksta.apps.robopoetry.service.entities.SpeechEvent
 import com.punksta.apps.robopoetry.service.entities.YandexVoice
 import com.punksta.apps.robopoetry.service.util.ClosableOnSpeechListener
@@ -24,12 +23,9 @@ abstract class BaseYandexSpeechService : Service() {
     abstract val apiKey: String
     private val listeners: MutableSet<OnSpeechListener> = HashSet()
     private var lastEvent: SpeechEvent<*>? = null
-    private var lastTask: SpeechTask? = null
     private var lastVocalizer: Vocalizer? = null
 
-
     abstract protected fun getTextForTask(task: SpeechTask): String
-
 
     inner open class YandexSpeechBinder : Binder() {
         protected inline val service: BaseYandexSpeechService
@@ -43,7 +39,7 @@ abstract class BaseYandexSpeechService : Service() {
             get() = service.lastEvent
 
         private val lastTask: SpeechTask?
-            get() = service.lastTask
+            get() = lastEvent?.task
 
 
         fun removeListener(listener: OnSpeechListener) {
@@ -55,26 +51,36 @@ abstract class BaseYandexSpeechService : Service() {
         }
     }
 
-
     protected fun createBinder(): YandexSpeechBinder {
         return YandexSpeechBinder()
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        return createBinder()
-    }
+    override fun onBind(intent: Intent): IBinder? = createBinder()
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        when (intent?.action) {
+            STOP_TASK -> {
+                stopLastTask()
+            }
+            STOP_SELF -> {
+                stopLastTask()
+                stopForeground(true)
+                stopSelf()
+            }
+            PLAY_TASK -> {
+                val task = intent.getParcelableExtra<SpeechTask>(TASK_KEY)
+                playTask(task)
+            }
+        }
+        return START_NOT_STICKY
+    }
 
     override fun onCreate() {
         super.onCreate()
         SpeechKit.getInstance().configure(this, apiKey)
     }
 
-
-    private fun notifyListeners(event: SpeechEvent<*>) {
-        val copy = listeners.toList()
-        copy.forEach { it.onEvent(event) }
-    }
+    private fun notifyListeners(event: SpeechEvent<*>) = listeners.forEach { it.onEvent(event) }
 
     private fun onNewEvent(event: SpeechEvent<*>) {
         lastEvent = event
@@ -86,20 +92,14 @@ abstract class BaseYandexSpeechService : Service() {
 
         val text = getTextForTask(task)
 
-        val sender: (SpeechEvent<*>) -> Unit = { event ->
-            if (lastTask == task) {
-                onNewEvent(event)
-            }
-        }
+        val sender: (SpeechEvent<*>) -> Unit = this::onNewEvent
 
         lastEvent = null
-        lastTask = task
         lastVocalizer = Vocalizer.createVocalizer(Vocalizer.Language.RUSSIAN, text, true, task.voice.yandexVoiceId)
                 .apply {
                     setListener(TaskEventListener(task, sender))
                     start()
                 }
-
     }
 
     private fun cancelLastTask() {
@@ -109,18 +109,15 @@ abstract class BaseYandexSpeechService : Service() {
         } catch (e: Throwable) {
 
         }
-        lastTask = null
         lastEvent = null
         lastVocalizer = null
     }
 
 
-    fun playTask(task: SpeechTask) {
-        setAndStartTask(task)
-    }
+    fun playTask(task: SpeechTask) = setAndStartTask(task)
 
     fun stopLastTask() {
-        val task = lastTask
+        val task = lastEvent?.task
         cancelLastTask()
         onNewEvent(SpeechEvent.OnSpeechStopped(task))
     }
@@ -128,53 +125,17 @@ abstract class BaseYandexSpeechService : Service() {
     fun addListener(listener: OnSpeechListener, emmitCurrentState: Boolean) {
         listeners.add(listener)
         if (emmitCurrentState) {
-            val e = lastEvent
-            if (e != null) {
-                listener.onEvent(e)
-            }
-            }
+            lastEvent?.let(listener::onEvent)
+        }
     }
-
-    private val block = Unit
 
     private fun removeListeners() {
         val copy = listeners.toList()
         copy.forEach { removeListener(it) }
     }
 
-    override fun onDestroy() {
-        NotificationManagerCompat.from(this).cancelAll()
-        removeListeners();
-        super.onDestroy()
-    }
-
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return when (intent?.action) {
-            STOP_TASK -> {
-                stopLastTask()
-                START_STICKY
-            }
-            STOP_SELF -> {
-                stopLastTask()
-                stopSelf()
-                START_NOT_STICKY
-            }
-            PLAY_TASK -> {
-                val task = intent.getParcelableExtra<SpeechTask>(PLAY_TASK)
-                playTask(task)
-                START_STICKY
-            }
-            else -> {
-                START_NOT_STICKY
-            }
-        }
-    }
-
     fun removeListener(listener: OnSpeechListener) {
-        synchronized(block) {
-            listeners.remove(listener)
-        }
+        listeners.remove(listener)
         if (listener is ClosableOnSpeechListener) {
             try {
                 listener.release()
@@ -184,8 +145,9 @@ abstract class BaseYandexSpeechService : Service() {
         }
     }
 
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        super.onTaskRemoved(rootIntent)
+    override fun onDestroy() {
+        removeListeners()
+        super.onDestroy()
     }
 
     companion object {
@@ -194,7 +156,7 @@ abstract class BaseYandexSpeechService : Service() {
         private val STOP_TASK = "stop_task"
         private val STOP_SELF = "stop_self"
 
-        fun Intent.putTask(task: SpeechTask) =
+        fun Intent.putTask(task: SpeechTask): Intent =
                 apply {
                     action = PLAY_TASK
                     putExtra(TASK_KEY, task)

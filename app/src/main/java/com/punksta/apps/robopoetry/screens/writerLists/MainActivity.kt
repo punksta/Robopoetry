@@ -1,6 +1,5 @@
 package com.punksta.apps.robopoetry.screens.writerLists
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
@@ -18,7 +17,6 @@ import com.punksta.apps.robopoetry.entity.WriterInfo
 import com.punksta.apps.robopoetry.ext.textChangesEvents
 import com.punksta.apps.robopoetry.model.getModel
 import com.punksta.apps.robopoetry.screens.writer.WriterActivity
-import com.punksta.apps.robopoetry.service.YandexSpeakService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
@@ -79,20 +77,9 @@ class MainActivity : AppCompatActivity(), (Entity) -> Unit {
 
     override fun onStart() {
         super.onStart()
-        startService(Intent(applicationContext, YandexSpeakService::class.java))
 
-//        if (loadad.not()) {
-//            disponseLoad = getModel().queryWriters()
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe { items, error ->
-//                        (findViewById(R.id.writers_item) as RecyclerView).adapter = WriterAdapter(items.toMutableList(), this)
-//
-//                    }
-//        }
-        disposableUpdate?.dispose()
         disposableUpdate = (findViewById<TextView>(R.id.filter_by_name))
-                .textChangesEvents(true)
+                .textChangesEvents(findViewById<RecyclerView>(R.id.writers_item).childCount == 0)
                 .flatMap {
                     getModel().queryWriters(it).toObservable()
                 }

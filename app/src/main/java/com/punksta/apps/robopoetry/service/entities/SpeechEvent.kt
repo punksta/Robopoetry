@@ -1,11 +1,12 @@
 package com.punksta.apps.robopoetry.service.entities
 
+import android.content.Intent
 import com.punksta.apps.robopoetry.service.SpeechTask
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 import ru.yandex.speechkit.Error
 
-sealed class SpeechEvent<out T : SpeechTask?>(val task: T) : PaperParcelable {
+sealed class SpeechEvent<out T : SpeechTask?>(@JvmField val task: T) : PaperParcelable {
     @PaperParcel
     class OnProcessingStart(task: SpeechTask) : SpeechEvent<SpeechTask>(task) {
         companion object {
@@ -105,4 +106,11 @@ sealed class SpeechEvent<out T : SpeechTask?>(val task: T) : PaperParcelable {
     }
 
 
+    @PaperParcel
+    class ServiceStarted(val intent: Intent, task: SpeechTask? = null) : SpeechEvent<SpeechTask?>(task) {
+        companion object {
+            @JvmField
+            val CREATOR = PaperParcelSpeechEvent_ServiceStarted.CREATOR
+        }
+    }
 }

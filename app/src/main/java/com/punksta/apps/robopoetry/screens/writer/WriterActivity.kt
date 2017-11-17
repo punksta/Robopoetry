@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.support.v7.app.AppCompatActivity
@@ -18,6 +19,8 @@ import com.punksta.apps.robopoetry.model.Robot
 import com.punksta.apps.robopoetry.model.getModel
 import com.punksta.apps.robopoetry.model.toRobotEnum
 import com.punksta.apps.robopoetry.service.BaseYandexSpeechService
+import com.punksta.apps.robopoetry.service.BaseYandexSpeechService.Companion.putTask
+import com.punksta.apps.robopoetry.service.SpeechTask
 import com.punksta.apps.robopoetry.service.YandexSpeakService
 import com.punksta.apps.robopoetry.service.entities.SpeechEvent
 import com.punksta.apps.robopoetry.service.util.OnSpeechListener
@@ -29,7 +32,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
-
 
 /**
  * Created by stanislav on 1/2/17.
@@ -61,8 +63,9 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                         getModel().getCurrent().voice,
                         "${writer!!.name} - ${p1.name}"
                 )
+                sendTaskToService(task)
 
-                bindler?.playTask(task)
+//                bindler?.playTask(task)
             }
         }
     }
@@ -101,13 +104,26 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         }
     }
 
+
+    private fun sendTaskToService(task: SpeechTask) {
+
+        val intent = Intent(this, YandexSpeakService::class.java).putTask(task)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
+    }
+
     private fun notifyRobotChange(robot: Robot) {
         speckers.clearSpeacking()
 
         val greeting = getModel().getGreetingForRobot(robot)
 
+        sendTaskToService(GreetingsSpeechTask(greeting, robot.voice, getString(robot.nameId)))
 
-        bindler?.playTask(GreetingsSpeechTask(greeting, robot.voice, getString(robot.nameId)))
+//        bindler?.playTask()
 //        startService(Intent(this, PlayingService::class.java)
 //                .setAction(ACTION_PLAY)
 //                .putExtra(EXTRA_VOICE, getCurrentVoice())
@@ -146,6 +162,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
 
     override fun onStart() {
         super.onStart()
+
         bindService(Intent(this, YandexSpeakService::class.java), serverConnection, Context.BIND_AUTO_CREATE)
     }
 

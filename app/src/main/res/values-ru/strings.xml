@@ -13,6 +13,8 @@
     <string name="name">Ваше имя</string>
     <string name="mart8">8 марта</string>
 
+    <string name="channel_description">RoboPoetry статус</string>
+    <string name="channel_name">Текущий стих RoboPoetry.</string>
 
     <plurals name="poem_plural">
         <item quantity="one">%1$s стих</item>
