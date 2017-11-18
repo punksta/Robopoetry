@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:mipMap="true"
+            android:src="@mipmap/background"
+            android:tileModeX="repeat"
+            android:tileModeY="repeat" />
+    </item>
+
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/robo_face" />
+    </item>
+
+</layer-list>

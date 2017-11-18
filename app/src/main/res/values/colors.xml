@@ -8,4 +8,6 @@
     <color name="threadColor">#b1d110</color>
     <color name="threadColorCorner">#7b910c</color>
 
+    <color name="black_overlay">#66000000</color>
+
 </resources>

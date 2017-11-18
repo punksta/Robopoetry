@@ -122,14 +122,6 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         val greeting = getModel().getGreetingForRobot(robot)
 
         sendTaskToService(GreetingsSpeechTask(greeting, robot.voice, getString(robot.nameId)))
-
-//        bindler?.playTask()
-//        startService(Intent(this, PlayingService::class.java)
-//                .setAction(ACTION_PLAY)
-//                .putExtra(EXTRA_VOICE, getCurrentVoice())
-//                .putExtra(EXTRA_ROBOT_GREETING, getModel().getGreetingForRobot(robot))
-//                .putExtra(EXTRA_ROBOT_NAME, getString(robot.nameId))
-//        )
     }
 
 
