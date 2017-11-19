@@ -39,7 +39,7 @@ class DataModelImp(context: Context) : DataModel {
 
     private val translate : Itranliteration = NaiveTransliteration()
 
-    private inline fun getKeyboardLocale() : Locale? {
+    private fun getKeyboardLocale(): Locale? {
         return try {
             val imm = app.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             val ims = imm.currentInputMethodSubtype
@@ -73,7 +73,7 @@ class DataModelImp(context: Context) : DataModel {
                         if (line?.isEmpty() != false) {
                             break
                         } else {
-                            result += WriterInfo(line!![0], line[1], line[2].toInt())
+                            result += WriterInfo(line[0], line[1], line[2].toInt())
                         }
                     }
                 }

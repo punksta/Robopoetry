@@ -51,19 +51,19 @@ android {
         minApi17 {
             dimension "minApi"
             minSdkVersion 17
-            versionCode 10*baseVersionCode + 1
+            versionCode 10 * baseVersionCode + 1
         }
 
         minApi21 {
             dimension "minApi"
             minSdkVersion 21
-            versionCode 10*baseVersionCode + 2
+            versionCode 10 * baseVersionCode + 2
         }
 
         minApi26 {
             dimension "minApi"
             minSdkVersion 26
-            versionCode = 10*baseVersionCode + 3
+            versionCode = 10 * baseVersionCode + 3
         }
     }
 }
@@ -106,3 +106,5 @@ dependencies {
     implementation 'org.funktionale:funktionale:0.8'
 
 }
+
+apply plugin: 'kotlin-android-extensions'

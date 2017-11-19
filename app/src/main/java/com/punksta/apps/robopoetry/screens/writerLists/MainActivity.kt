@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), (Entity) -> Unit {
         textView.setTextColor(ContextCompat.getColor(this, R.color.terminal_text_color))
         AlertDialog.Builder(this)
                 .setView(textView)
-                .setPositiveButton("ok", {d, e -> d.dismiss()})
+                .setPositiveButton("ok", { d, _ -> d.dismiss() })
                 .show()
     }
 

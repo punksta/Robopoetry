@@ -17,9 +17,10 @@ object TaskTextProviderImpl : TaskTextProvider {
     private val providers: MutableList<ClassAndProvider<*>> = mutableListOf()
 
     override fun <T : SpeechTask> provide(speechTask: T): String {
-        return providers.first { it.clazz == speechTask.javaClass }
+        return providers
+                .first { it.clazz == speechTask.javaClass }
                 .let { it as ClassAndProvider<T> }
-                .let { it.provider.provide(speechTask) }
+                .provider.provide(speechTask)
 
     }
 
