@@ -1,5 +1,4 @@
 <resources>
-
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -10,4 +9,42 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
+    <style name="AppTheme.Origin">
+        <item name="screen_background">@drawable/sheme_backbround</item>
+        <item name="list_background">@drawable/terminal_background</item>
+        <item name="cable_color">@color/threadColor.origin</item>
+        <item name="robot_image_tint">@color/robotImageTint.origin</item>
+    </style>
+
+    <style name="AppTheme.Neon">
+        <item name="screen_background">@mipmap/neon_background</item>
+        <item name="list_background">@drawable/neon_space</item>
+        <item name="cable_color">@color/threadColor.neon</item>
+        <item name="robot_image_tint">@color/robotImageTint.neon</item>
+    </style>
+
+    <style name="Screen">
+        <item name="android:background">?screen_background</item>
+    </style>
+
+    <style name="ScreenTopSearch">
+        <item name="android:background">?list_background</item>
+    </style>
+
+    <style name="ScreenMainList">
+        <item name="android:background">?list_background</item>
+    </style>
+
+    <style name="Thread">
+        <item name="color">?cable_color</item>
+        <item name="strokeWidth">1.5dp</item>
+    </style>
+
+    <style name="RobotNameColor">
+        <item name="android:textColor">?cable_color</item>
+    </style>
+
+    <style name="RobotImageStyle">
+        <item name="android:tint">?robot_image_tint</item>
+    </style>
 </resources>

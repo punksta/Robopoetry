@@ -5,8 +5,11 @@
     <color name="colorAccent">#0fdc01</color>
 
     <color name="terminal_text_color">#d7d400</color>
-    <color name="threadColor">#b1d110</color>
-    <color name="threadColorCorner">#7b910c</color>
+
+    <color name="threadColor.origin">#b1d110</color>
+    <color name="threadColor.neon">#e41e00ff</color>
+    <color name="robotImageTint.neon">#6ab20bc4</color>
+    <color name="robotImageTint.origin">@null</color>
 
     <color name="black_overlay">#66000000</color>
 

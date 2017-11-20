@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
@@ -7,14 +8,17 @@
 
     <ImageView
         android:id="@+id/speaker_image"
+        style="@style/RobotImageStyle"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_margin="5dp"
         android:scaleType="centerInside"
-        android:src="@drawable/face1" />
+        android:tintMode="src_atop"
+        tools:src="@drawable/face1" />
 
     <TextView
         android:id="@+id/speaker_name"
+        style="@style/RobotNameColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -22,8 +26,7 @@
         android:fontFamily="@font/clacon_normal"
         android:gravity="center"
         android:lines="2"
-        android:text="@string/face2"
         android:textAlignment="center"
-        android:textColor="@color/threadColor"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        tools:text="@string/face2" />
 </LinearLayout>

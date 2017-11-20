@@ -14,4 +14,11 @@
         <attr name="metaButtonBarStyle" format="reference" />
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
+
+
+    <attr name="screen_background" format="reference" />
+    <attr name="list_background" format="reference" />
+    <attr name="cable_color" format="reference|color" />
+    <attr name="robot_image_tint" format="reference|color" />
+
 </resources>

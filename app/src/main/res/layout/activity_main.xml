@@ -3,21 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
+    style="@style/Screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/sheme_backbround"
     tools:context="com.punksta.apps.robopoetry.screens.writerLists.MainActivity">
 
 
     <com.punksta.apps.robopoetry.view.BottomLeftCornerView
+        style="@style/Thread"
         android:layout_width="30dp"
         android:layout_height="150dp"
         android:layout_alignBottom="@+id/filter_by_name"
         android:layout_marginEnd="-10dp"
         android:layout_toStartOf="@+id/info_button"
-        app:color="@color/threadColor"
-        app:data="13.5,10; 18.5,15"
-        app:strokeWidth="1.5dp" />
+        app:data="13.5,10; 18.5,15" />
 
 
     <Button
@@ -33,36 +32,23 @@
 
 
     <com.punksta.apps.robopoetry.view.BottomLeftCornerView
+        style="@style/Thread"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/filter_by_name"
-        app:color="@color/threadColor"
         app:data="30,5; 35,10"
         app:strokeWidth="1.5dp" />
 
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/filter_by_name"
-        android:layout_alignEnd="@+id/filter_by_name"
-        android:layout_alignStart="@+id/filter_by_name"
-        android:layout_alignTop="@+id/filter_by_name"
-
-        android:background="@drawable/terminal_corners"
-
-        android:scaleType="centerCrop"
-        android:src="@drawable/terminal_background" />
-
     <EditText
         android:id="@+id/filter_by_name"
+        style="@style/ScreenTopSearch"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="29dp"
         android:layout_toStartOf="@+id/info_button"
-        android:background="@android:color/transparent"
         android:fontFamily="@font/clacon"
         android:hint="@string/search"
 
@@ -72,30 +58,19 @@
         android:paddingStart="16dp" />
 
     <com.punksta.apps.robopoetry.view.BottomLeftCornerView
+        style="@style/Thread"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/writers_item"
-        app:color="@color/threadColor"
-        app:data="25,20; 20,15; 15,10; 10,5"
-        app:strokeWidth="1.5dp" />
+        app:data="25,20; 20,15; 15,10; 10,5" />
 
 
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/writers_item"
-        android:layout_alignEnd="@+id/writers_item"
-        android:layout_alignStart="@+id/writers_item"
-        android:layout_alignTop="@+id/writers_item"
-        android:layout_marginBottom="1dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/terminal_background" />
 
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/writers_item"
+        style="@style/ScreenMainList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/filter_by_name"
