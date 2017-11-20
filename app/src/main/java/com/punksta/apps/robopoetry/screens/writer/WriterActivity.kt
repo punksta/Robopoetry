@@ -7,10 +7,9 @@ import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.os.Parcelable
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.widget.Button
 import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.entity.*
 import com.punksta.apps.robopoetry.ext.hidekeyKoard
@@ -24,8 +23,8 @@ import com.punksta.apps.robopoetry.service.SpeechTask
 import com.punksta.apps.robopoetry.service.YandexSpeakService
 import com.punksta.apps.robopoetry.service.entities.SpeechEvent
 import com.punksta.apps.robopoetry.service.util.OnSpeechListener
-import com.punksta.apps.robopoetry.view.SpeackersView
 import com.squareup.picasso.Picasso
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -39,21 +38,14 @@ import java.util.concurrent.TimeUnit
  * Created by stanislav on 1/2/17.
  */
 class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
-
-    private var load: Disposable? = null
     private var update: Disposable? = null
-    private var callback: Disposable? = null
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
+    private var pendingSavedState: Parcelable? = null;
 
-    private val button: Button
-        get() = findViewById(R.id.stop_button)
 
     private val writer: WriterInfo?
         get() = intent.getParcelableExtra("writer")
-
-    private val speckers: SpeackersView
-        get() = findViewById(R.id.speakers)
 
 
     override fun invoke(p1: EntityItem) {
@@ -67,13 +59,10 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                 )
                 sendTaskToService(task)
 
-//                bindler?.playTask(task)
             }
         }
     }
 
-
-    private var loaded = false
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -85,25 +74,25 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
 
         setContentView(R.layout.activity_writer)
 
-        overridePendingTransition(R.anim.left_in, R.anim.left_out)
+        poems_items.layoutManager = LinearLayoutManager(this)
 
-        (findViewById<RecyclerView>(R.id.poems_items)).layoutManager = LinearLayoutManager(this)
+        if (savedInstanceState == null) {
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
+        } else {
+            pendingSavedState = savedInstanceState.getParcelable(LAYOUT_MANAGER_KEY)
+        }
 
-        val s = speckers
-
-        s.listener = {
+        speakers.listener = {
             getModel().setCurrent(it)
             notifyRobotChange(it)
         }
 
-        if (savedInstanceState == null) {
-            s.showRobots(getModel().getRobots(), getModel().getCurrent(), Picasso.with(this))
-            loaded = false
-        }
+        speakers.showRobots(getModel().getRobots(), getModel().getCurrent(), Picasso.with(this))
 
-        button.setOnClickListener {
+        stop_button.setOnClickListener {
             bindler?.stopLastTask()
         }
+
         poems_items.setOnTouchListener({ _, _ ->
             hidekeyKoard()
             false
@@ -123,7 +112,7 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
     }
 
     private fun notifyRobotChange(robot: Robot) {
-        speckers.clearSpeacking()
+        speakers.clearSpeacking()
 
         val greeting = getModel().getGreetingForRobot(robot)
 
@@ -158,36 +147,81 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         }
     }
 
+    private val LAYOUT_MANAGER_KEY = "layout_manager";
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        (poems_items?.layoutManager as? LinearLayoutManager)
+                ?.let {
+                    outState?.putParcelable(LAYOUT_MANAGER_KEY, it.onSaveInstanceState())
+                }
+    }
+
+
     override fun onStart() {
         super.onStart()
 
         bindService(Intent(this, YandexSpeakService::class.java), serverConnection, Context.BIND_AUTO_CREATE)
-    }
-
-
-    override fun onResume() {
-        super.onResume()
 
         val w = writer
 
+        when {
+            w != null -> {
+                filter_by_name.setHint(R.string.search)
+
+                val isLoaded = poems_items.childCount > 0;
+
+                update = filter_by_name.textChangesEvents(false)
+                        .debounce(500, TimeUnit.MILLISECONDS)
+                        .observeOn(Schedulers.io())
+                        .mergeWith(Observable.just("").filter {
+                            !isLoaded
+                        })
+                        .flatMap { getModel().queryPoems(writerId = w.id, query = it, cutLimit = 40).toObservable() }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { list ->
+                            val adapter = (poems_items.adapter)
+                            when (adapter) {
+                                null -> {
+                                    poems_items.adapter = PoemAdapter(list.toMutableList(), this)
+                                    pendingSavedState?.let((poems_items.layoutManager as LinearLayoutManager)::onRestoreInstanceState)
+                                    pendingSavedState = null
+                                }
+                                else -> {
+                                    (adapter as PoemAdapter).update(list)
+                                }
+                            }
+                        }
+                        .also {
+                            compositeDisposable.add(it)
+                        }
+            }
+            else -> {
+                finish()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
         eventsSubject
                 .distinctUntilChanged()
                 .subscribe {
                     when (it) {
                         is SpeechEvent.OnProcessingStart -> {
-                            speckers.clearSpeacking()
-                            button.isEnabled = true
+                            speakers.clearSpeacking()
+                            stop_button.isEnabled = true
                         }
 
                         is SpeechEvent.OnSpeechStart -> {
                             val robot = it.task.voice.toRobotEnum().robot
-                            speckers.setActive(robot)
-                            speckers.setSpeacking(robot)
+                            speakers.setActive(robot)
+                            speakers.setSpeacking(robot)
                         }
 
                         else -> {
-                            speckers.clearSpeacking()
-                            button.isEnabled = false
+                            speakers.clearSpeacking()
+                            stop_button.isEnabled = false
                         }
                     }
                 }
@@ -196,53 +230,20 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                 }
 
 
-        when {
-            w != null -> {
-                filter_by_name.setHint(R.string.search)
+    }
 
-                if (loaded.not()) {
-                    load = getModel().queryPoems(writerId = w.id, cutLimit = 40)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { list ->
-                                poems_items.adapter = PoemAdapter(list.toMutableList(), this)
-                            }
-                            .also {
-                                compositeDisposable.add(it)
-                            }
-                }
-                update = filter_by_name.textChangesEvents(false)
-                        .debounce(500, TimeUnit.MILLISECONDS)
-                        .observeOn(Schedulers.io())
-                        .flatMap { getModel().queryPoems(writerId = w.id, query = it, cutLimit = 40).toObservable() }
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { list ->
-                            ((findViewById<RecyclerView>(R.id.poems_items)).adapter as PoemAdapter).update(list)
-                        }
-                        .also {
-                            compositeDisposable.add(it)
-                        }
-            }
-
-            else -> {
-                finish()
-            }
-        }
-
+    override fun onPause() {
+        super.onPause()
+        compositeDisposable.clear()
+        speakers.clearSpeacking()
+        stop_button.isEnabled = false
     }
 
     override fun onStop() {
         super.onStop()
-
         unbindService(serverConnection)
         bindler?.removeListener(listener)
-
-        callback?.dispose()
-        load?.dispose()
         update?.dispose()
-
-        speckers.clearSpeacking()
-        button.isEnabled = false
 
     }
 
