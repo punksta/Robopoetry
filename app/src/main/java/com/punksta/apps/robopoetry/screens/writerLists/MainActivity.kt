@@ -8,17 +8,18 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.method.LinkMovementMethod
-import android.view.View
 import android.view.View.TEXT_ALIGNMENT_CENTER
 import android.widget.TextView
 import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.entity.Entity
 import com.punksta.apps.robopoetry.entity.WriterInfo
+import com.punksta.apps.robopoetry.ext.hidekeyKoard
 import com.punksta.apps.robopoetry.ext.textChangesEvents
 import com.punksta.apps.robopoetry.model.getModel
 import com.punksta.apps.robopoetry.screens.writer.WriterActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.activity_main.*
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
 import org.sufficientlysecure.htmltextview.HtmlTextView
 import java.util.*
@@ -60,18 +61,21 @@ class MainActivity : AppCompatActivity(), (Entity) -> Unit {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         setContentView(R.layout.activity_main)
-        (findViewById<TextView>(R.id.filter_by_name))
-        (findViewById<RecyclerView>(R.id.writers_item)).run {
+
+        writers_item.run {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = WriterAdapter(ArrayList(), this@MainActivity)
         }
 
-        findViewById<View>(R.id.info_button).setOnClickListener {
+        info_button.setOnClickListener {
             showSourceDialog()
         }
 
+        writers_item.setOnTouchListener({ _, _ ->
+            hidekeyKoard()
+            false
+        })
     }
 
 

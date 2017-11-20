@@ -11,9 +11,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
-import android.widget.TextView
 import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.entity.*
+import com.punksta.apps.robopoetry.ext.hidekeyKoard
 import com.punksta.apps.robopoetry.ext.textChangesEvents
 import com.punksta.apps.robopoetry.model.Robot
 import com.punksta.apps.robopoetry.model.getModel
@@ -32,6 +32,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
+import kotlinx.android.synthetic.main.activity_writer.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -103,6 +104,10 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
         button.setOnClickListener {
             bindler?.stopLastTask()
         }
+        poems_items.setOnTouchListener({ _, _ ->
+            hidekeyKoard()
+            false
+        })
     }
 
 
@@ -193,20 +198,20 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
 
         when {
             w != null -> {
-                (findViewById<TextView>(R.id.filter_by_name)).setHint(R.string.search)
+                filter_by_name.setHint(R.string.search)
 
                 if (loaded.not()) {
                     load = getModel().queryPoems(writerId = w.id, cutLimit = 40)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe { list ->
-                                (findViewById<RecyclerView>(R.id.poems_items)).adapter = PoemAdapter(list.toMutableList(), this)
+                                poems_items.adapter = PoemAdapter(list.toMutableList(), this)
                             }
                             .also {
                                 compositeDisposable.add(it)
                             }
                 }
-                update = (findViewById<TextView>(R.id.filter_by_name)).textChangesEvents(false)
+                update = filter_by_name.textChangesEvents(false)
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(Schedulers.io())
                         .flatMap { getModel().queryPoems(writerId = w.id, query = it, cutLimit = 40).toObservable() }
