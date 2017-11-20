@@ -32,6 +32,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by stanislav on 1/2/17.
@@ -206,8 +207,9 @@ class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
                             }
                 }
                 update = (findViewById<TextView>(R.id.filter_by_name)).textChangesEvents(false)
+                        .debounce(500, TimeUnit.MILLISECONDS)
+                        .observeOn(Schedulers.io())
                         .flatMap { getModel().queryPoems(writerId = w.id, query = it, cutLimit = 40).toObservable() }
-                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { list ->
                             ((findViewById<RecyclerView>(R.id.poems_items)).adapter as PoemAdapter).update(list)
