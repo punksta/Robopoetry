@@ -71,6 +71,11 @@
     </string-array>
 
     <string name="title_activity_splash">SplashActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="appDetailsMessage">Robots which reading russian poems.</string>
+    <string name="settings.play_music">Play spiritual music in background</string>
+    <string name="settings.select_theme">Select ui theme</string>
+    <string name="settings.theme.neon">Neon</string>
+    <string name="settings.theme.origin">Origin</string>
+
 </resources>

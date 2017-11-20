@@ -34,6 +34,10 @@
             android:name=".screens.writer.WriterActivity"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
 
+        <activity
+            android:name=".screens.settings.SettingsActivity"
+            android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
+
         <service
             android:name=".service.YandexSpeakService"
             android:enabled="true"

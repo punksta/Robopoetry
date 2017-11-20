@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    style="@style/Screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    tools:context="com.punksta.apps.robopoetry.screens.writerLists.MainActivity">
+
+
+    <com.punksta.apps.robopoetry.view.BottomLeftCornerView
+        style="@style/Thread"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/writers_item"
+        app:data="25,20; 20,15; 15,10; 10,5" />
+
+
+    <RelativeLayout
+        android:id="@+id/writers_item"
+        style="@style/ScreenMainList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="46dp"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:scrollbars="vertical">
+
+        <TextView
+            android:id="@id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:fontFamily="@font/clacon_normal"
+            android:text="@string/app_name"
+            android:textSize="35sp" />
+
+
+        <TextView
+            android:id="@+id/subTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:text="@string/appDetailsMessage"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/play_music_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/play_music_checkbox"
+            android:layout_below="@+id/subTitle"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/play_music_checkbox"
+            android:text="@string/settings.play_music" />
+
+        <CheckBox
+            android:id="@+id/play_music_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/subTitle"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/select_theme_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/play_music_checkbox"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/settings.select_theme" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@+id/select_theme_title"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/origin_theme"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/terminal_background" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/settings.theme.origin" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/neon_theme"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/neon_background" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/settings.theme.neon" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

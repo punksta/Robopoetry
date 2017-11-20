@@ -23,6 +23,7 @@ import com.punksta.apps.robopoetry.service.SpeechTask
 import com.punksta.apps.robopoetry.service.YandexSpeakService
 import com.punksta.apps.robopoetry.service.entities.SpeechEvent
 import com.punksta.apps.robopoetry.service.util.OnSpeechListener
+import com.punksta.apps.robopoetry.view.ThemeActivity
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -37,7 +38,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by stanislav on 1/2/17.
  */
-class WriterActivity : AppCompatActivity(), (EntityItem) -> Unit {
+class WriterActivity : ThemeActivity(), (EntityItem) -> Unit {
     private var update: Disposable? = null
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
