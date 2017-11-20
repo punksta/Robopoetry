@@ -22,7 +22,7 @@
         style="@style/Thread"
         android:layout_width="40dp"
         android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/screen"
+        android:layout_alignBottom="@+id/poems_items"
         app:data="25,20; 20,15; 15,10; 10,5" />
 
     <com.punksta.apps.robopoetry.view.BottomLeftCornerView
@@ -65,8 +65,10 @@
         android:paddingStart="16dp" />
 
 
-    <LinearLayout
-        android:id="@id/screen"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/poems_items"
+        style="@style/ScreenMainList"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/speakers"
@@ -74,20 +76,11 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="16dp"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/poems_items"
-            style="@style/ScreenMainList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:paddingTop="14dp"
-            android:scrollbars="vertical" />
-
-    </LinearLayout>
+        android:clipToPadding="false"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingTop="14dp"
+        android:scrollbars="vertical" />
 
 
     <com.punksta.apps.robopoetry.view.SpeackersView
