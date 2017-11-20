@@ -18,6 +18,10 @@ class PoemViewHolder(view: View, val name: TextView, val year: TextView, val cut
 
 class PoemAdapter(val items: MutableList<EntityItem>, val poemListener: (EntityItem) -> Unit) : RecyclerView.Adapter<PoemViewHolder>() {
 
+    init {
+        setHasStableIds(true)
+    }
+
     override fun onBindViewHolder(holder: PoemViewHolder, position: Int) {
         val item = items[position]
         when (item) {
@@ -27,6 +31,15 @@ class PoemAdapter(val items: MutableList<EntityItem>, val poemListener: (EntityI
                 holder.cutTextView.text = item.сutText
                 holder.itemView.setOnClickListener { poemListener(item) }
             }
+        }
+    }
+
+    override fun getItemId(position: Int): Long {
+        val item = items[position]
+
+        return when (item) {
+            is Poem -> item.id.hashCode().toLong()
+            else -> super.getItemId(position)
         }
     }
 
