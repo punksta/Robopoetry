@@ -36,6 +36,7 @@
 
         <activity
             android:name=".screens.settings.SettingsActivity"
+            android:parentActivityName=".screens.writerLists.MainActivity"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
 
         <service

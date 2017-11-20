@@ -1,11 +1,14 @@
 package com.punksta.apps.robopoetry.screens.settings
 
+import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.SharedPreferences
 import android.os.Bundle
 import com.punksta.apps.robopoetry.R
+import com.punksta.apps.robopoetry.screens.writerLists.MainActivity
 import com.punksta.apps.robopoetry.view.ThemeActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 
@@ -53,11 +56,14 @@ class SettingsActivity : ThemeActivity() {
 
 
     private fun goToNewTheme(settings: Settings) {
-        startActivity(Intent(this, SettingsActivity::class.java)
-                .addFlags(FLAG_ACTIVITY_CLEAR_TASK)
-                .setAction("change_theme")
-        )
         finish()
+        TaskStackBuilder.create(this)
+                .addNextIntent(Intent(this, MainActivity::class.java)
+                        .addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)
+                )
+                .addNextIntent(Intent(this, SettingsActivity::class.java)
+                        .setAction("change_theme"))
+                .startActivities()
     }
 
 
