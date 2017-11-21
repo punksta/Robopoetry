@@ -72,10 +72,15 @@
 
     <string name="title_activity_splash">SplashActivity</string>
 
-    <string name="appDetailsMessage">Robots which reading russian poems.</string>
+    <string name="appDetailsMessage">Settings</string>
     <string name="settings.play_music">Play spiritual music in background</string>
     <string name="settings.select_theme">Select ui theme</string>
     <string name="settings.theme.neon">Neon</string>
     <string name="settings.theme.origin">Origin</string>
+    <string name="punksta">punksta</string>
+    <string name="contact_me">contact me</string>
+    <string name="author_title">author</string>
+    <string name="build_name">build name</string>
+    <string name="info">Info</string>
 
 </resources>

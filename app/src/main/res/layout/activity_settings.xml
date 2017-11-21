@@ -18,8 +18,7 @@
         android:layout_alignBottom="@+id/writers_item"
         app:data="25,20; 20,15; 15,10; 10,5" />
 
-
-    <RelativeLayout
+    <ScrollView
         android:id="@+id/writers_item"
         style="@style/ScreenMainList"
         android:layout_width="match_parent"
@@ -27,118 +26,206 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="46dp"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:scrollbars="vertical">
+        android:padding="@dimen/activity_horizontal_margin">
 
-        <TextView
-            android:id="@id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:fontFamily="@font/clacon_normal"
-            android:text="@string/app_name"
-            android:textSize="35sp" />
-
-
-        <TextView
-            android:id="@+id/subTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/title"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:text="@string/appDetailsMessage"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/play_music_title"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/play_music_checkbox"
-            android:layout_below="@+id/subTitle"
-            android:layout_marginEnd="8dp"
-            android:layout_toStartOf="@+id/play_music_checkbox"
-            android:text="@string/settings.play_music" />
 
-        <CheckBox
-            android:id="@+id/play_music_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/subTitle"
-            android:layout_marginTop="20dp" />
+            android:scrollbars="vertical">
 
-        <TextView
-            android:id="@+id/select_theme_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/play_music_checkbox"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/settings.select_theme" />
+            <TextView
+                android:id="@id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/clacon_normal"
+                android:text="@string/app_name"
+                android:textSize="35sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_below="@+id/select_theme_title"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/origin_theme"
+            <TextView
+                android:id="@+id/subTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/clacon_normal"
+                android:gravity="center_horizontal"
+                android:text="@string/appDetailsMessage"
+                android:textSize="@dimen/text_medium" />
+
+            <TextView
+                android:id="@+id/play_music_title"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/play_music_checkbox"
+                android:layout_below="@+id/subTitle"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/play_music_checkbox"
+                android:fontFamily="@font/clacon_normal"
+                android:text="@string/settings.play_music"
+                android:textSize="@dimen/text_medium" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/terminal_background" />
+            <CheckBox
+                android:id="@+id/play_music_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/subTitle"
+                android:layout_marginTop="20dp" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/settings.theme.origin" />
-            </LinearLayout>
+            <View
+                android:id="@+id/deliver1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/play_music_title"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/select_theme_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/deliver1"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/clacon_normal"
+                android:text="@string/settings.select_theme"
+                android:textSize="@dimen/text_medium" />
 
 
             <LinearLayout
-                android:id="@+id/neon_theme"
-
+                android:id="@+id/theme_select"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_height="@dimen/theme_preview_height"
+                android:layout_below="@+id/select_theme_title"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:orientation="horizontal">
 
-                <ImageView
+                <LinearLayout
+                    android:id="@+id/origin_theme"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/neon_background" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/settings.theme.neon" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/clacon_normal"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/terminal_background" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/clacon_normal"
+                        android:text="@string/settings.theme.origin"
+                        android:textSize="@dimen/text_large" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/neon_theme"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/neon_background" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/clacon_normal"
+                        android:text="@string/settings.theme.neon"
+                        android:textSize="@dimen/text_large" />
+                </LinearLayout>
             </LinearLayout>
 
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/infoTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/theme_select"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/clacon_normal"
+                android:gravity="center_horizontal"
+                android:text="@string/info"
+                android:textSize="@dimen/text_large" />
 
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/version_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/infoTitle"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/clacon"
+                android:text="@string/build_name"
+                android:textSize="@dimen/text_medium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/version_title"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/clacon_normal"
+                android:text="@string/versionName"
+                android:textSize="@dimen/text_medium" />
+
+
+            <View
+                android:id="@+id/deliver3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/version_title"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="@color/colorAccent"
+                android:textSize="@dimen/text_medium" />
+
+            <TextView
+                android:id="@+id/author_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/deliver3"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/clacon_normal"
+                android:text="@string/author_title"
+                android:textSize="@dimen/text_medium" />
+
+            <TextView
+                android:id="@+id/author_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/author_title"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/clacon_normal"
+                android:text="@string/punksta"
+                android:textSize="@dimen/text_medium" />
+
+
+        </RelativeLayout>
+    </ScrollView>
 
 
 </RelativeLayout>
