@@ -11,6 +11,8 @@
     <color name="robotImageTint.neon">#6ab20bc4</color>
     <color name="robotImageTint.origin">@null</color>
 
+    <color name="colorAccent.neon">#ff00da</color>
+
     <color name="black_overlay">#66000000</color>
 
 </resources>

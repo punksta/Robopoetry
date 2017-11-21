@@ -21,6 +21,7 @@
         <item name="list_background">@drawable/neon_space</item>
         <item name="cable_color">@color/threadColor.neon</item>
         <item name="robot_image_tint">@color/robotImageTint.neon</item>
+        <item name="colorAccent">@color/colorAccent.neon</item>
     </style>
 
     <style name="Screen">
