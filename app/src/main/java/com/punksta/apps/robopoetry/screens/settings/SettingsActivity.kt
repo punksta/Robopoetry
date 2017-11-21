@@ -20,6 +20,8 @@ class SettingsActivity : ThemeActivity() {
 
     private lateinit var sharedPref: SharedPreferences
 
+    private lateinit var currentTheme: Theme;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -27,21 +29,31 @@ class SettingsActivity : ThemeActivity() {
         sharedPref = application.getSharedPreferences(
                 Settings.preferenceName, Context.MODE_PRIVATE)
 
+
+        Settings.read(sharedPref, Settings.defaultSettings).let {
+            currentTheme = it.theme
+            this.renderSettings(it)
+        }
+
         play_music_checkbox.setOnCheckedChangeListener { _, isSelected ->
             Settings.write(sharedPref, Settings.read(sharedPref, Settings.defaultSettings).copy(playSound = isSelected))
         }
 
         origin_theme.setOnClickListener {
-            Settings.read(sharedPref, Settings.defaultSettings).copy(theme = Theme.ORIGIN).run {
-                Settings.write(sharedPref, this)
-                goToNewTheme(this)
+            if (currentTheme != Theme.ORIGIN) {
+                Settings.read(sharedPref, Settings.defaultSettings).copy(theme = Theme.ORIGIN).run {
+                    Settings.write(sharedPref, this)
+                    goToNewTheme(this)
+                }
             }
         }
 
         neon_theme.setOnClickListener {
-            Settings.read(sharedPref, Settings.defaultSettings).copy(theme = Theme.NEON).run {
-                Settings.write(sharedPref, this)
-                goToNewTheme(this)
+            if (currentTheme != Theme.NEON) {
+                Settings.read(sharedPref, Settings.defaultSettings).copy(theme = Theme.NEON).run {
+                    Settings.write(sharedPref, this)
+                    goToNewTheme(this)
+                }
             }
         }
 
@@ -74,8 +86,6 @@ class SettingsActivity : ThemeActivity() {
 
     override fun onStart() {
         super.onStart()
-
-        Settings.read(sharedPref, Settings.defaultSettings).let(this::renderSettings)
 
         sharedPref.registerOnSharedPreferenceChangeListener(sharedPreferenceListener)
     }
