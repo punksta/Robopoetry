@@ -84,7 +84,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/play_music_title"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:background="@color/colorAccent" />
+                android:background="?colorAccent" />
 
             <TextView
                 android:id="@+id/select_theme_title"
@@ -200,7 +200,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/version_title"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:background="@color/colorAccent"
+                android:background="?attr/colorAccent"
                 android:textSize="@dimen/text_medium" />
 
             <TextView
