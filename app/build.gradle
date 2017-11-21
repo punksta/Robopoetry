@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 
 
 def baseVersionCode = 10
-
+def baseVersionName = "1.4"
 
 android {
     compileSdkVersion 27
@@ -14,12 +14,11 @@ android {
         minSdkVersion 17
         targetSdkVersion 27
         versionCode baseVersionCode
-        versionName "1.4"
+        versionName baseVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
         buildConfigField 'String', 'yandexApiKey', "\"37064543-1d5c-4a88-80f6-d84ed607d874\""
-
     }
 
     lintOptions {
@@ -51,23 +50,32 @@ android {
         minApi17 {
             dimension "minApi"
             minSdkVersion 17
+            versionName = "${baseVersionName}-sdk17"
             versionCode 10 * baseVersionCode + 1
         }
 
         minApi21 {
             dimension "minApi"
             minSdkVersion 21
+            versionName = "${baseVersionName}-sdk21"
             versionCode 10 * baseVersionCode + 2
         }
 
         minApi26 {
             dimension "minApi"
             minSdkVersion 26
+            versionName = "${baseVersionName}-sdk26"
             versionCode = 10 * baseVersionCode + 3
         }
     }
 }
 
+android.applicationVariants.all { variant ->
+    version = "${baseVersionName}-${variant.flavorName}-${variant.buildType.name}"
+    variant.mergedFlavor.versionName =  version
+    variant.resValue "string", "versionName", version
+    variant.resValue "string", "versionCode", variant.versionCode.toString()
+}
 
 configurations {
     all {
