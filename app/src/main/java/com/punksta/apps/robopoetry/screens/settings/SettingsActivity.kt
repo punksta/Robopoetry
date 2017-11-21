@@ -6,10 +6,12 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.screens.writerLists.MainActivity
 import com.punksta.apps.robopoetry.view.ThemeActivity
+import de.psdev.licensesdialog.LicensesDialog
 import kotlinx.android.synthetic.main.activity_settings.*
 
 
@@ -64,6 +66,27 @@ class SettingsActivity : ThemeActivity() {
                 overridePendingTransition(R.anim.right_in, R.anim.right_out)
             }
         }
+
+        third_party_components.setOnClickListener {
+            try {
+                LicensesDialog.Builder(this)
+                        .setShowFullLicenseText(false)
+                        .setIncludeOwnLicense(true)
+                        .setNotices(R.raw.third_party_list)
+                        .build()
+                        .showAppCompat()
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+        }
+
+        yandex_copyright.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.yandex_url))))
+        }
+
+        author_value.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.yandex_url))))
+        }
     }
 
 
@@ -82,11 +105,11 @@ class SettingsActivity : ThemeActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.left_in, R.anim.left_out)
+
     }
 
     override fun onStart() {
         super.onStart()
-
         sharedPref.registerOnSharedPreferenceChangeListener(sharedPreferenceListener)
     }
 

@@ -3,16 +3,13 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#050a28</color>
     <color name="colorAccent">#0fdc01</color>
-
+    <color name="linkColor">#e41e00ff</color>
     <color name="terminal_text_color">#d7d400</color>
-
     <color name="threadColor.origin">#b1d110</color>
     <color name="threadColor.neon">#e41e00ff</color>
     <color name="robotImageTint.neon">#6ab20bc4</color>
     <color name="robotImageTint.origin">@null</color>
-
     <color name="colorAccent.neon">#ff00da</color>
-
     <color name="black_overlay">#66000000</color>
 
 </resources>

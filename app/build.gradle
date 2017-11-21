@@ -97,7 +97,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'org.sufficientlysecure:html-textview:3.5'
     implementation 'com.yandex.android:speechkit:2.5.0'
     //    compile 'com.ibm.icu:icu4j:55.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
@@ -112,7 +111,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.2'
 
     implementation 'org.funktionale:funktionale:0.8'
-
+    implementation 'de.psdev.licensesdialog:licensesdialog:1.8.3'
 }
 
 apply plugin: 'kotlin-android-extensions'

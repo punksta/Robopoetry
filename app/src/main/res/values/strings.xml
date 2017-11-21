@@ -82,5 +82,10 @@
     <string name="author_title">author</string>
     <string name="build_name">build name</string>
     <string name="info">Info</string>
+    <string name="powered_by_yandex">Powered by Yandex SpeechKit Mobile SDK</string>
+    <string name="yandex.url">https://tech.yandex.ru/speechkit/mobilesdk/</string>
+    <string name="punksta.url">https://github.com/punksta</string>
+    <string name="third_party_soft">third_party_soft</string>
+    <string name="third_party_components">Open source Libraries</string>
 
 </resources>

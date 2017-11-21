@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notices>
+    <notice>
+        <name>
+            The Android Open Source Project
+        </name>
+        <url>https://android.googlesource.com</url>
+        <copyright>Copyright (C) 2011 The Android Open Source Project</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>
+            RxJava
+        </name>
+        <url>https://github.com/ReactiveX/RxJava</url>
+        <copyright>Copyright (c) 2016-present, RxJava Contributors.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+
+    <notice>
+        <name>
+            opencsv
+        </name>
+        <url>http://opencsv.sourceforge.net/</url>
+        <copyright>Copyright © 2017</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>
+            rxandroid
+        </name>
+        <url>https://github.com/ReactiveX/RxAndroid/</url>
+        <copyright>Copyright (c) 2016-present, RxJava Contributors.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>
+            Jackson Data Processor
+        </name>
+        <url>https://github.com/FasterXML/jackson-core/</url>
+        <copyright>Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+
+    <notice>
+        <name>
+            picasso
+        </name>
+        <url>https://github.com/square/picasso/</url>
+        <copyright>Copyright 2013 Square, Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+
+    <notice>
+        <name>
+            paperparcel
+        </name>
+        <url>https://github.com/grandstaish/paperparcel</url>
+        <copyright>Copyright 2016 Bradley Campbell.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>
+            AndroidViewAnimations
+        </name>
+        <url>https://github.com/daimajia/AndroidViewAnimations</url>
+        <copyright>Copyright (c) 2014 daimajia</copyright>
+        <license>MIT License</license>
+    </notice>
+
+
+    <notice>
+        <name>
+            funKTionale
+        </name>
+        <url>https://github.com/MarioAriasC/funKTionale</url>
+        <copyright>Copyright 2013 - 2016 Mario Arias</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>
+            Kotlin
+        </name>
+        <url>https://github.com/JetBrains/kotlin</url>
+        <copyright>Copyright 2010-2017 JetBrains s.r.o.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+</notices>

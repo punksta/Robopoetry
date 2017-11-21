@@ -25,8 +25,9 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="46dp"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:layout_marginTop="30dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -221,7 +222,49 @@
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/clacon_normal"
                 android:text="@string/punksta"
+                android:textColor="@color/linkColor"
                 android:textSize="@dimen/text_medium" />
+
+            <View
+                android:id="@+id/deliver4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/author_value"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="?attr/colorAccent"
+                android:textSize="@dimen/text_medium" />
+
+
+            <TextView
+                android:id="@+id/third_party_components"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/deliver4"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/clacon_normal"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/third_party_components"
+                android:textColor="@color/linkColor"
+                android:textSize="@dimen/text_medium" />
+
+
+            <View
+                android:id="@+id/deliver5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/third_party_components"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="?attr/colorAccent"
+                android:textSize="@dimen/text_medium" />
+
+            <include
+                android:id="@+id/yandex_copyright"
+                layout="@layout/yandex_copytight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/deliver5"
+                android:layout_marginTop="@dimen/activity_vertical_margin" />
 
 
         </RelativeLayout>
