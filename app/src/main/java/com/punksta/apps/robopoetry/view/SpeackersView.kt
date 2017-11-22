@@ -55,12 +55,13 @@ class SpeackersView : HorizontalScrollView {
                         (findViewById<TextView>(R.id.speaker_name) as TextView).text = context.getString(l.nameId)
                         val image = (findViewById<ImageView>(R.id.speaker_image))
 
-                        requestManager.load(l.drawableId)
-                                .centerInside()
-                                .fit()
-                                .into(image)
 
-//                        image.setImageResource(l.drawableId)
+//                        requestManager.load(l.drawableId)
+//                                .centerInside()
+//                                .fit()
+//                                .into(image)
+
+                        image.setImageResource(l.drawableId)
 
                         map[l] = image
                         setOnClickListener {

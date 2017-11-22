@@ -16,11 +16,11 @@ data class Robot(@DrawableRes val drawableId: Int,
 
 
 enum class RobotEnum(val robot: com.punksta.apps.robopoetry.model.Robot) {
-    Riko(Robot(R.drawable.face1, R.string.face1, YandexVoice.ALYSS)),
-    ChiyoChiyo(Robot(R.drawable.face2, R.string.face2, YandexVoice.ERMIL)),
-    Hana(Robot(R.drawable.face3, R.string.face3, YandexVoice.JANE)),
-    Tomiko(Robot(R.drawable.face4, R.string.face4, YandexVoice.OMAZH)),
-    Taro(Robot(R.drawable.face5, R.string.face5, YandexVoice.ZAHAR))
+    Riko(Robot(R.drawable.face1_vec, R.string.face1, YandexVoice.ALYSS)),
+    ChiyoChiyo(Robot(R.drawable.face2_vec, R.string.face2, YandexVoice.ERMIL)),
+    Hana(Robot(R.drawable.face3_vec, R.string.face3, YandexVoice.JANE)),
+    Tomiko(Robot(R.drawable.face4_vec, R.string.face4, YandexVoice.OMAZH)),
+    Taro(Robot(R.drawable.face5_vec, R.string.face5, YandexVoice.ZAHAR))
 }
 
 fun Robot.toEnum() : RobotEnum = RobotEnum.values().first { it.robot == this }

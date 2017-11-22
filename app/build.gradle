@@ -48,23 +48,21 @@ android {
     productFlavors {
 
         minApi17 {
+            vectorDrawables.useSupportLibrary = true
             dimension "minApi"
             minSdkVersion 17
-            versionName = "${baseVersionName}-sdk17"
             versionCode 10 * baseVersionCode + 1
         }
 
         minApi21 {
             dimension "minApi"
             minSdkVersion 21
-            versionName = "${baseVersionName}-sdk21"
             versionCode 10 * baseVersionCode + 2
         }
 
         minApi26 {
             dimension "minApi"
             minSdkVersion 26
-            versionName = "${baseVersionName}-sdk26"
             versionCode = 10 * baseVersionCode + 3
         }
     }
