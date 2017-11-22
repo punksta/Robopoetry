@@ -85,7 +85,7 @@ class NotificationSpeechListener(
             val notification = NotificationCompat.Builder(context, channelId)
                     .setContentText(speechTask.title)
                     .setContentTitle("Now playing")
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.drawable.ic_play_icon)
                     .setLargeIcon(icon)
                     .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))
                     .setTicker(speechTask.title)
