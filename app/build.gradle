@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 def baseVersionCode = 10
 def baseVersionName = "1.4"
@@ -64,6 +65,13 @@ android {
             dimension "minApi"
             minSdkVersion 26
             versionCode = 10 * baseVersionCode + 3
+
+            android.compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+
+            kotlinOptions.jvmTarget = "1.8"
         }
     }
 }
@@ -82,7 +90,6 @@ configurations {
 }
 
 
-apply plugin: 'kotlin-kapt'
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -94,7 +101,11 @@ dependencies {
     implementation 'com.opencsv:opencsv:4.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    minApi26Implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    minApi21Implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    minApi17Implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
     implementation 'com.yandex.android:speechkit:2.5.0'
     //    compile 'com.ibm.icu:icu4j:55.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
@@ -111,5 +122,3 @@ dependencies {
     implementation 'org.funktionale:funktionale:0.8'
     implementation 'de.psdev.licensesdialog:licensesdialog:1.8.3'
 }
-
-apply plugin: 'kotlin-android-extensions'
