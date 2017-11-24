@@ -12,9 +12,7 @@ import java.io.InputStreamReader
  * Created by stanislav on 11/16/17.
  */
 class GreetingsSpeechTaskProvider : TaskTextProviderT<GreetingsSpeechTask> {
-    override fun provide(t: GreetingsSpeechTask): String {
-        return t.text
-    }
+    override fun provide(t: GreetingsSpeechTask): String = t.text
 }
 
 class PoemReadProvider(val context: Context) : TaskTextProviderT<PoemSpeechTask> {
@@ -37,7 +35,6 @@ class PoemReadProvider(val context: Context) : TaskTextProviderT<PoemSpeechTask>
 
     private val readTextFromDiskMemoized = this::readTextFromDisk.memoize()
 
-    override fun provide(t: PoemSpeechTask): String {
-        return t.title + " " + readTextFromDiskMemoized(t.writerId, t.poemId) + ". \n\t"
-    }
+    override fun provide(t: PoemSpeechTask): String =
+            t.title + ". \n\t" + readTextFromDiskMemoized(t.writerId, t.poemId)
 }
