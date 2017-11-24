@@ -19,6 +19,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
+        kotlinOptions.jvmTarget = "1.6"
+
         buildConfigField 'String', 'yandexApiKey', "\"37064543-1d5c-4a88-80f6-d84ed607d874\""
     }
 
@@ -65,16 +67,10 @@ android {
             dimension "minApi"
             minSdkVersion 26
             versionCode = 10 * baseVersionCode + 3
-
-            android.compileOptions {
-                sourceCompatibility JavaVersion.VERSION_1_8
-                targetCompatibility JavaVersion.VERSION_1_8
-            }
-
-            kotlinOptions.jvmTarget = "1.8"
         }
     }
 }
+
 
 android.applicationVariants.all { variant ->
     version = "${baseVersionName}-${variant.flavorName}-${variant.buildType.name}"
@@ -83,12 +79,17 @@ android.applicationVariants.all { variant ->
     variant.resValue "string", "versionCode", variant.versionCode.toString()
 }
 
+
 configurations {
     all {
         exclude module: 'commons-logging'
     }
 }
 
+android.compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_6
+    targetCompatibility JavaVersion.VERSION_1_6
+}
 
 
 dependencies {
@@ -102,7 +103,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.2'
 
-    minApi26Implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    minApi26Implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     minApi21Implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     minApi17Implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
