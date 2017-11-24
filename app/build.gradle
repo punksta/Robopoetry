@@ -3,8 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
-def baseVersionCode = 10
-def baseVersionName = "1.4"
+def baseVersionCode = 11
+def baseVersionName = "2.0"
 
 android {
     compileSdkVersion 27
