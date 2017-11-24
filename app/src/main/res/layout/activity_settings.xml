@@ -36,7 +36,7 @@
             android:scrollbars="vertical">
 
             <TextView
-                android:id="@id/title"
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -51,39 +51,43 @@
                 android:id="@+id/subTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/title"
+                android:layout_below="@+id/title"
                 android:layout_centerHorizontal="true"
                 android:fontFamily="@font/clacon_normal"
-                android:gravity="center_horizontal"
                 android:text="@string/appDetailsMessage"
                 android:textSize="@dimen/text_medium" />
 
-            <TextView
-                android:id="@+id/play_music_title"
+            <LinearLayout
+                android:id="@+id/subtitle_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/play_music_checkbox"
                 android:layout_below="@+id/subTitle"
-                android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@+id/play_music_checkbox"
-                android:fontFamily="@font/clacon_normal"
-                android:text="@string/settings.play_music"
-                android:textSize="@dimen/text_medium" />
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <CheckBox
-                android:id="@+id/play_music_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/subTitle"
-                android:layout_marginTop="20dp" />
+                <TextView
+                    android:id="@+id/play_music_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/clacon_normal"
+                    android:text="@string/settings.play_music"
+                    android:textSize="@dimen/text_medium" />
+
+                <CheckBox
+                    android:id="@+id/play_music_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
 
             <View
                 android:id="@+id/deliver1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/play_music_title"
+                android:layout_below="@+id/subtitle_wrapper"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="?colorAccent" />
 
@@ -229,7 +233,7 @@
                 android:id="@+id/deliver4"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/author_value"
+                android:layout_below="@+id/author_title"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="?attr/colorAccent"
                 android:textSize="@dimen/text_medium" />
@@ -258,13 +262,18 @@
                 android:background="?attr/colorAccent"
                 android:textSize="@dimen/text_medium" />
 
-            <include
-                android:id="@+id/yandex_copyright"
-                layout="@layout/yandex_copytight"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/deliver5"
-                android:layout_marginTop="@dimen/activity_vertical_margin" />
+                android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                <include
+                    android:id="@+id/yandex_copyright"
+                    layout="@layout/yandex_copytight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
 
 
         </RelativeLayout>

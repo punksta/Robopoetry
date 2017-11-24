@@ -6,8 +6,7 @@
             android:gravity="center"
             android:mipMap="true"
             android:src="@mipmap/background"
-            android:tileModeX="repeat"
-            android:tileModeY="repeat" />
+            android:tileMode="repeat" />
     </item>
 
     <item>
