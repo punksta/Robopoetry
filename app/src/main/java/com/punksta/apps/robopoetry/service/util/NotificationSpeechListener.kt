@@ -84,7 +84,7 @@ class NotificationSpeechListener(
         try {
             val notification = NotificationCompat.Builder(context, channelId)
                     .setContentText(speechTask.title)
-                    .setContentTitle("Now playing")
+                    .setContentTitle(context.getString(R.string.current_play))
                     .setSmallIcon(R.drawable.ic_play_icon)
                     .setLargeIcon(icon)
                     .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))
@@ -92,7 +92,7 @@ class NotificationSpeechListener(
                     .addAction(
                             NotificationCompat.Action.Builder(
                                     R.drawable.ic_stop_black_24dp,
-                                    "stop",
+                                    context.getString(R.string.button_stop).toLowerCase(),
                                     stopIntent
                             ).build()
                     )

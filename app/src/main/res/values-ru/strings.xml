@@ -10,16 +10,35 @@
     <string name="button_stop">СТОП</string>
     <string name="search">поиск</string>
 
-    <string name="name">Ваше имя</string>
-    <string name="mart8">8 марта</string>
+    <string name="channel_description">Что сейчас воспроизводится</string>
+    <string name="channel_name">Статус</string>
+    <string name="current_play">Сейчас воспроизводится</string>
 
-    <string name="channel_description">RoboPoetry статус</string>
-    <string name="channel_name">Текущий стих RoboPoetry.</string>
+
+    <string name="contact_me">Напишите мне</string>
+    <string name="author_title">Автор</string>
+    <string name="build_name">Номер билда</string>
 
     <plurals name="poem_plural">
         <item quantity="one">%1$s стих</item>
         <item quantity="few">%1$s стиха</item>
         <item quantity="many">%1$d стихов</item>
     </plurals>
+
+
+    <string name="title_activity_splash">SplashActivity</string>
+
+    <string name="appDetailsMessage">Настройки</string>
+    <string name="settings.play_music">Играть возвышенную музыку во время чтения стихов</string>
+    <string name="settings.select_theme">Выбрать тему оформления</string>
+    <string name="settings.theme.neon">Neon</string>
+    <string name="settings.theme.origin">Origin</string>
+    <string name="punksta">punksta</string>
+    <string name="info">Информация</string>
+    <string name="powered_by_yandex">Использует сервис "Yandex SpeechKit Mobile SDK"</string>
+    <string name="third_party_soft">Открытые лиценции ПО</string>
+    <string name="third_party_components">Открытые лиценции ПО</string>
+    <string name="play_error_message">Не могу воспроизвести стих, проверьте соединение с интернетом</string>
+
 
 </resources>

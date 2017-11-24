@@ -9,10 +9,10 @@
     <string name="button_info">INFO</string>
     <string name="button_stop">STOP</string>
     <string name="search">search</string>
-    <string name="name">your name</string>
 
-    <string name="channel_description">RoboPoetry status</string>
-    <string name="channel_name">RoboPoetry current speech status and controls.</string>
+    <string name="channel_description">RoboPoetry current speech status and controls.</string>
+    <string name="channel_name">RoboPoetry status</string>
+    <string name="current_play">Current speech</string>
 
     <plurals name="poem_plural">
         <item quantity="one">%1$s poem</item>
@@ -20,6 +20,7 @@
         <item quantity="few">%1$s poems</item>
         <item quantity="other">%1$s poems</item>
     </plurals>
+
 
     <string-array name="ricko_greetings">
         <item>Привет, я Рико!</item>
