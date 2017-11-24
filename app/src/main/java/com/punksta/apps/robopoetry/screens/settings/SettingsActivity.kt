@@ -85,7 +85,7 @@ class SettingsActivity : ThemeActivity() {
         }
 
         author_value.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.yandex_url))))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.punksta_url))))
         }
     }
 
