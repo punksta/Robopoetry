@@ -218,6 +218,7 @@ class WriterActivity : ThemeActivity(), (EntityItem) -> Unit {
                             val robot = it.task.voice.toRobotEnum().robot
                             speakers.setActive(robot)
                             speakers.setSpeacking(robot)
+                            stop_button.isEnabled = true
                         }
 
                         else -> {
