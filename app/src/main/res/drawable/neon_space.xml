@@ -3,5 +3,6 @@
     android:gravity="center"
     android:mipMap="true"
     android:src="@mipmap/background"
+    android:tileMode="repeat"
     android:tileModeX="repeat"
     android:tileModeY="repeat" />
