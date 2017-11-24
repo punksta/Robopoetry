@@ -80,6 +80,8 @@ class NotificationSpeechListener(
 
     private val icon = BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher)
 
+    private val stopIcon = R.drawable.ic_stop
+
     private fun showNotification(speechTask: SpeechTask) {
         try {
             val notification = NotificationCompat.Builder(context, channelId)
@@ -91,7 +93,7 @@ class NotificationSpeechListener(
                     .setTicker(speechTask.title)
                     .addAction(
                             NotificationCompat.Action.Builder(
-                                    R.drawable.ic_stop_black_24dp,
+                                    stopIcon,
                                     context.getString(R.string.button_stop).toLowerCase(),
                                     stopIntent
                             ).build()
