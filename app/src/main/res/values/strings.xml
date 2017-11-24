@@ -71,8 +71,6 @@
         <item>Настоящее — это повторяющееся, прошлое — само повторение, а будущее — это повторяемое.</item>
     </string-array>
 
-    <string name="title_activity_splash">SplashActivity</string>
-
     <string name="appDetailsMessage">Settings</string>
     <string name="settings.play_music">Play spiritual music in background</string>
     <string name="settings.select_theme">Select ui theme</string>
