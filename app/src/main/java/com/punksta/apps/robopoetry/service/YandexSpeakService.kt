@@ -10,6 +10,7 @@ import com.punksta.apps.robopoetry.service.entities.SpeechEvent
 import com.punksta.apps.robopoetry.service.util.NotificationSpeechListener
 import com.punksta.apps.robopoetry.service.util.OnSpeechListener
 import com.punksta.apps.robopoetry.service.util.PlayerListener
+import com.punksta.apps.robopoetry.service.util.ToastSpeechListener
 
 
 /**
@@ -51,7 +52,7 @@ class YandexSpeakService : BaseYandexSpeechService() {
 
             addListener(loggerListener, true)
         }
-
+        addListener(ToastSpeechListener(this, !BuildConfig.DEBUG), false)
         addListener(PlayerListener(this, "music/sound1.mp3"), true)
     }
 }

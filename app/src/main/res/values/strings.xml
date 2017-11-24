@@ -87,5 +87,6 @@
     <string name="punksta.url">https://github.com/punksta</string>
     <string name="third_party_soft">third_party_soft</string>
     <string name="third_party_components">Open source Libraries</string>
+    <string name="play_error_message">Can\'t play poem. Check your internet connection and try again</string>
 
 </resources>
