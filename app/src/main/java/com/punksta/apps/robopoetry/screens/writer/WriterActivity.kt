@@ -24,7 +24,6 @@ import com.punksta.apps.robopoetry.service.YandexSpeakService
 import com.punksta.apps.robopoetry.service.entities.SpeechEvent
 import com.punksta.apps.robopoetry.service.util.OnSpeechListener
 import com.punksta.apps.robopoetry.view.ThemeActivity
-import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -88,7 +87,7 @@ class WriterActivity : ThemeActivity(), (EntityItem) -> Unit {
             notifyRobotChange(it)
         }
 
-        speakers.showRobots(getModel().getRobots(), getModel().getCurrent(), Picasso.with(this))
+        speakers.showRobots(getModel().getRobots(), getModel().getCurrent())
 
         stop_button.setOnClickListener {
             bindler?.stopLastTask()

@@ -15,6 +15,5 @@ abstract class ThemeActivity : AppCompatActivity() {
                 .run { Settings.read(this, Settings.defaultSettings) }
                 .run { setTheme(this.theme.themeRes) }
         super.onCreate(savedInstanceState)
-
     }
 }

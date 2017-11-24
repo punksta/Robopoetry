@@ -107,8 +107,6 @@ dependencies {
     minApi17Implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     implementation 'com.yandex.android:speechkit:2.5.0'
-    //    compile 'com.ibm.icu:icu4j:55.1'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'nz.bradcampbell:paperparcel:2.0.4'
     implementation 'nz.bradcampbell:paperparcel-kotlin:2.0.4'
 

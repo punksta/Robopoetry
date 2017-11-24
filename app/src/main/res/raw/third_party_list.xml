@@ -47,14 +47,14 @@
     </notice>
 
 
-    <notice>
-        <name>
-            picasso
-        </name>
-        <url>https://github.com/square/picasso/</url>
-        <copyright>Copyright 2013 Square, Inc.</copyright>
-        <license>Apache Software License 2.0</license>
-    </notice>
+    <!--<notice>-->
+    <!--<name>-->
+    <!--picasso-->
+    <!--</name>-->
+    <!--<url>https://github.com/square/picasso/</url>-->
+    <!--<copyright>Copyright 2013 Square, Inc.</copyright>-->
+    <!--<license>Apache Software License 2.0</license>-->
+    <!--</notice>-->
 
 
     <notice>

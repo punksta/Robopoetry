@@ -13,7 +13,6 @@ import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.punksta.apps.robopoetry.R
 import com.punksta.apps.robopoetry.model.Robot
-import com.squareup.picasso.Picasso
 
 /**
  * Created by stanislav on 1/2/17.
@@ -45,7 +44,7 @@ class SpeackersView : HorizontalScrollView {
         addView(linearLayout, MATCH_PARENT, WRAP_CONTENT)
     }
 
-    fun showRobots(list: List<Robot>, active: Robot = list.first(), requestManager: Picasso) {
+    fun showRobots(list: List<Robot>, active: Robot = list.first()) {
         map.clear()
         val linearLayout = getChildAt(0) as LinearLayout
         linearLayout.removeAllViews()
